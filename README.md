@@ -14,7 +14,7 @@
 ## 🛠️ 기술 스택
 
 - **Backend**: Flask (Python)
-- **Database**: SQLite
+- **Database**: SQLite (로컬) / PostgreSQL (배포)
 - **Frontend**: HTML, CSS, JavaScript
 - **Deployment**: Railway
 
@@ -25,7 +25,7 @@
 pip install -r requirements.txt
 
 # 애플리케이션 실행
-python 매물공유.py
+python app.py
 ```
 
 브라우저에서 `http://localhost:5000` 접속
