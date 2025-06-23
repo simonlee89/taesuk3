@@ -1,0 +1,965 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>집노트 관리자</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        @import url('https://fonts.googleapis.com/css2?family=Pretendard:wght@300;400;500;600;700;800&display=swap');
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #DBEAFE;
+            min-height: 100vh;
+            line-height: 1.6;
+            color: #333;
+        }
+        
+        .header {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 16px 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 2px 20px rgba(0, 0, 0, 0.1);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .header-content {
+            max-width: 95%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .logo {
+            font-size: 24px;
+            font-weight: 800;
+            color: #0066ff;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-shrink: 0;
+        }
+        
+        .logo::before {
+            content: "🏠";
+            font-size: 28px;
+        }
+        
+        .quote-section {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 80px;
+            transform: translateX(-5%);
+        }
+        
+        .quote-iframe {
+            width: 800px;
+            height: 80px;
+            border: none;
+            border-radius: 12px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(10px);
+        }
+        
+        .container {
+            max-width: 95%;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        
+        .page-title {
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 32px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .card {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 24px;
+            margin-bottom: 20px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .card-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            color: #1f2937;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-customer-form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            padding: 12px 16px;
+            border: 2px solid #e5e7eb;
+            border-radius: 12px;
+            font-size: 14px;
+            background: white;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #0066ff;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        
+        .btn {
+            padding: 12px 24px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, #0066ff 0%, #004cc7 100%);
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0, 102, 255, 0.5), 0 0 20px rgba(0, 102, 255, 0.3);
+            filter: brightness(1.1);
+        }
+        
+        .btn-secondary {
+            background: #f3f4f6;
+            color: #374151;
+        }
+        
+        .btn-secondary:hover {
+            background: #e5e7eb;
+            box-shadow: 0 4px 15px rgba(55, 65, 81, 0.2), 0 0 10px rgba(55, 65, 81, 0.1);
+            transform: translateY(-1px);
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+            box-shadow: 0 6px 20px rgba(239, 68, 68, 0.4), 0 0 15px rgba(239, 68, 68, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            min-width: 1400px;
+        }
+        
+        .table-container {
+            overflow-x: auto;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.1);
+        }
+        
+        .customers-table th,
+        .customers-table td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e5e7eb;
+            font-size: 13px;
+        }
+        
+        .customers-table th {
+            background: #f9fafb;
+            font-weight: 600;
+            color: #374151;
+            position: sticky;
+            top: 0;
+        }
+        
+        .customers-table tr:hover {
+            background: #f9fafb;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-progress {
+            background: #dbeafe;
+            color: #1d4ed8;
+        }
+        
+        .status-complete {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-hold {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .management-link {
+            color: #0066ff;
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .management-link:hover {
+            text-decoration: underline;
+        }
+        
+        .actions {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .btn-small {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+        
+        .inline-input {
+            width: 100%;
+            padding: 4px 8px;
+            border: 1px solid #0066ff;
+            border-radius: 4px;
+            font-size: 12px;
+            background: white;
+        }
+        
+        .inline-select {
+            width: 100%;
+            padding: 4px 8px;
+            border: 1px solid #0066ff;
+            border-radius: 4px;
+            font-size: 12px;
+            background: white;
+        }
+        
+        .editing-row {
+            background-color: #f0f8ff !important;
+        }
+        
+        .card-title {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .memo-cell {
+            cursor: pointer;
+            max-width: 100px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            color: #0066ff;
+            text-decoration: underline;
+        }
+        
+        .memo-cell:hover {
+            background-color: #f0f8ff;
+        }
+        
+        .editable-cell {
+            cursor: pointer;
+            padding: 8px 12px;
+            transition: all 0.2s ease;
+            border-radius: 4px;
+        }
+        
+        .editable-cell:hover {
+            background-color: #f0f8ff;
+            box-shadow: 0 0 0 1px #0066ff;
+        }
+        
+        .editing-cell {
+            padding: 0 !important;
+        }
+        
+        .cell-input {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #0066ff;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+            font-family: inherit;
+        }
+        
+        .cell-select {
+            width: 100%;
+            padding: 8px 12px;
+            border: 2px solid #0066ff;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+            outline: none;
+            font-family: inherit;
+        }
+        
+        .memo-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+        
+        .memo-modal-content {
+            background-color: white;
+            margin: 5% auto;
+            padding: 20px;
+            border-radius: 12px;
+            width: 80%;
+            max-width: 600px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+        }
+        
+        .memo-textarea {
+            width: 100%;
+            height: 300px;
+            padding: 15px;
+            border: 2px solid #e5e7eb;
+            border-radius: 8px;
+            font-family: 'Pretendard', monospace;
+            font-size: 14px;
+            line-height: 1.6;
+            resize: vertical;
+            outline: none;
+        }
+        
+        .memo-textarea:focus {
+            border-color: #0066ff;
+            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+        }
+        
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+        }
+        
+        .modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            border-radius: 16px;
+            padding: 24px;
+            max-width: 600px;
+            width: 90%;
+            max-height: 80vh;
+            overflow-y: auto;
+        }
+        
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 700;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #6b7280;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: #6b7280;
+        }
+        
+        @media (max-width: 768px) {
+            .add-customer-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .customers-table {
+                font-size: 12px;
+            }
+            
+            .customers-table th,
+            .customers-table td {
+                padding: 8px 4px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <div class="header-content">
+            <div class="logo">집노트</div>
+            <div class="quote-section">
+                <iframe src="https://korean-quotes.vercel.app/" class="quote-iframe" title="한국어 명언 위젯"></iframe>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1 class="page-title" style="color: #9f7aea;">고객 관리 노트</h1>
+        
+
+        
+        <div class="card">
+            <div class="card-title">
+                👥 고객 목록
+                <button class="btn btn-primary btn-small" onclick="addNewRow()" style="margin-left: auto;">
+                    ➕ 행 추가
+                </button>
+            </div>
+            
+            <div id="customers-loading" class="loading">
+                고객 정보를 불러오는 중...
+            </div>
+            
+            <div id="customers-container" style="display: none;">
+                <div style="overflow-x: auto;">
+                                <div class="table-container">
+                <table class="customers-table">
+                    <thead>
+                        <tr>
+                            <th>날짜</th>
+                            <th>입주</th>
+                            <th>고객</th>
+                            <th>고객번호</th>
+                            <th>금액</th>
+                            <th>룸수</th>
+                            <th>위치</th>
+                            <th>대출여부</th>
+                            <th>주차</th>
+                            <th>애완</th>
+                            <th>메모</th>
+                            <th style="width: 120px;">진행여부</th>
+                                                                <th>주거사이트</th>
+                                    <th>업무사이트</th>
+                            <th>작업</th>
+                        </tr>
+                    </thead>
+                        <tbody id="customers-tbody">
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <!-- 메모 모달 -->
+    <div id="memo-modal" class="memo-modal">
+        <div class="memo-modal-content">
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                <h3 style="margin: 0; color: #1f2937;">메모 편집</h3>
+                <button onclick="closeMemoModal()" style="background: none; border: none; font-size: 24px; cursor: pointer; color: #6b7280;">&times;</button>
+            </div>
+            <textarea id="memo-textarea" class="memo-textarea" placeholder="메모를 입력하세요..."></textarea>
+            <div style="margin-top: 15px; display: flex; gap: 10px; justify-content: flex-end;">
+                <button onclick="saveMemo()" class="btn btn-primary">저장</button>
+                <button onclick="closeMemoModal()" class="btn btn-secondary">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+
+
+        // 고객 목록 로드
+        async function loadCustomers() {
+            try {
+                const response = await fetch('/api/customers');
+                const data = await response.json();
+                
+                const tbody = document.getElementById('customers-tbody');
+                tbody.innerHTML = '';
+                
+                if (data.customers && data.customers.length > 0) {
+                    data.customers.forEach(customer => {
+                        const row = createCustomerRow(customer);
+                        tbody.appendChild(row);
+                    });
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="13" style="text-align: center; padding: 40px; color: #6b7280;">등록된 고객이 없습니다.</td></tr>';
+                }
+                
+                document.getElementById('customers-loading').style.display = 'none';
+                document.getElementById('customers-container').style.display = 'block';
+            } catch (error) {
+                console.error('고객 목록 로드 실패:', error);
+                document.getElementById('customers-loading').innerHTML = '고객 목록 로드에 실패했습니다.';
+            }
+        }
+
+        // 고객 행 생성
+        function createCustomerRow(customer) {
+            const row = document.createElement('tr');
+            row.dataset.customerId = customer.id;
+            row.dataset.managementSiteId = customer.management_site_id;
+            
+            const statusClass = customer.progress_status === '계약' ? 'status-complete' : 
+                               customer.progress_status === '보류' ? 'status-hold' : 'status-progress';
+            
+            const managementUrl = `${window.location.origin}/customer/${customer.management_site_id}`;
+            
+            const memoText = customer.memo || '-';
+            const memoDisplay = memoText.length > 10 ? memoText.substring(0, 10) + '...' : memoText;
+            
+            row.innerHTML = `
+                <td class="editable-cell" data-field="inquiry_date" data-type="date" onclick="editCell(this)">${customer.inquiry_date}</td>
+                <td class="editable-cell" data-field="move_in_date" data-type="date" onclick="editCell(this)">${customer.move_in_date}</td>
+                <td class="editable-cell" data-field="customer_name" data-type="text" onclick="editCell(this)">${customer.customer_name}</td>
+                <td class="editable-cell" data-field="customer_phone" data-type="tel" onclick="editCell(this)">${customer.customer_phone}</td>
+                <td class="editable-cell" data-field="amount" data-type="text" onclick="editCell(this)">${customer.amount || '-'}</td>
+                <td class="editable-cell" data-field="room_count" data-type="text" onclick="editCell(this)">${customer.room_count || '-'}</td>
+                <td class="editable-cell" data-field="location" data-type="text" onclick="editCell(this)">${customer.location}</td>
+                <td class="editable-cell" data-field="loan_info" data-type="text" onclick="editCell(this)">${customer.loan_info || '-'}</td>
+                <td class="editable-cell" data-field="parking" data-type="text" onclick="editCell(this)">${customer.parking || '-'}</td>
+                <td class="editable-cell" data-field="pets" data-type="text" onclick="editCell(this)">${customer.pets || '-'}</td>
+                <td class="memo-cell" onclick="openMemoModal(${customer.id}, '${(customer.memo || '').replace(/'/g, "\\'")}')" title="${customer.memo || ''}">${memoDisplay}</td>
+                <td class="editable-cell" data-field="progress_status" data-type="select" onclick="editCell(this)"><span class="status-badge ${statusClass}">${customer.progress_status}</span></td>
+                                            <td><a href="http://localhost:5000/customer/${customer.management_site_id}" target="_blank" class="management-link">주거사이트</a></td>
+                            <td><a href="http://localhost:5001/customer/${customer.management_site_id}" target="_blank" class="management-link">업무사이트</a></td>
+                <td>
+                    <div class="actions">
+                        <button class="btn btn-danger btn-small" onclick="deleteCustomer(${customer.id})">삭제</button>
+                    </div>
+                </td>
+            `;
+            
+            return row;
+        }
+
+        // 새 행 추가
+        function addNewRow() {
+            const tbody = document.getElementById('customers-tbody');
+            const newRow = document.createElement('tr');
+            newRow.classList.add('editing-row');
+            // 오늘 날짜 구하기 (한국시간 기준, 안전하게)
+            const now = new Date();
+            now.setHours(now.getHours() + 9);
+            const today = now.toISOString().slice(0, 10);
+            newRow.innerHTML = `
+                <td><input type="date" class="inline-input" name="inquiry_date" required style="border-color: #0066ff;" value="${today}"></td>
+                <td><input type="date" class="inline-input" name="move_in_date"></td>
+                <td><input type="text" class="inline-input" name="customer_name" placeholder="고객명"></td>
+                <td><input type="tel" class="inline-input" name="customer_phone"></td>
+                <td><input type="text" class="inline-input" name="amount" placeholder="금액"></td>
+                <td><input type="text" class="inline-input" name="room_count" placeholder="룸수"></td>
+                <td><input type="text" class="inline-input" name="location"></td>
+                <td><input type="text" class="inline-input" name="loan_info"></td>
+                <td><input type="text" class="inline-input" name="parking"></td>
+                <td><input type="text" class="inline-input" name="pets"></td>
+                <td><input type="text" class="inline-input" name="memo"></td>
+                <td>
+                    <select class="inline-select" name="progress_status">
+                        <option value="진행중">진행중</option>
+                        <option value="계약">계약</option>
+                        <option value="보류">보류</option>
+                    </select>
+                </td>
+                <td><a href="#" class="management-link" onclick="updatePropertySiteLink(this)">주거사이트</a></td>
+                <td><a href="#" class="management-link" onclick="updateBusinessSiteLink(this)">업무사이트</a></td>
+                <td>
+                    <div class="actions">
+                        <button class="btn btn-primary btn-small" onclick="saveNewRow(this)">저장</button>
+                        <button class="btn btn-secondary btn-small" onclick="cancelNewRow(this)">취소</button>
+                    </div>
+                </td>
+            `;
+            tbody.insertBefore(newRow, tbody.firstChild);
+
+            // --- 키보드 네비게이션 기능 추가 ---
+            const inputs = newRow.querySelectorAll('input, select');
+            inputs.forEach((input, idx) => {
+                input.addEventListener('keydown', function(e) {
+                    let nextIdx = null;
+                    if (e.key === 'Enter' || e.key === 'ArrowRight' || (e.key === 'Tab' && !e.shiftKey)) {
+                        e.preventDefault();
+                        nextIdx = idx + 1;
+                    } else if (e.key === 'ArrowLeft' || (e.key === 'Tab' && e.shiftKey)) {
+                        e.preventDefault();
+                        nextIdx = idx - 1;
+                    } else if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        nextIdx = idx + 1;
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        nextIdx = idx - 1;
+                    }
+                    if (nextIdx !== null && nextIdx >= 0 && nextIdx < inputs.length) {
+                        inputs[nextIdx].focus();
+                    }
+                });
+            });
+            // 첫 번째 input에 자동 포커스
+            if (inputs.length > 0) inputs[0].focus();
+        }
+
+        // 새 행 저장
+        async function saveNewRow(button) {
+            const row = button.closest('tr');
+            const inputs = row.querySelectorAll('input, select');
+            const data = {};
+            
+            // 필수 필드 검증 (날짜만)
+            const inquiryDateInput = row.querySelector('input[name="inquiry_date"]');
+            if (!inquiryDateInput.value.trim()) {
+                alert('첫 문의 날짜는 필수입니다.');
+                inquiryDateInput.style.borderColor = '#ef4444';
+                inquiryDateInput.focus();
+                return;
+            }
+            
+            // 데이터 수집
+            inputs.forEach(input => {
+                data[input.name] = input.value;
+            });
+            
+            // 데이터 정리 (빈 값 처리)
+            Object.keys(data).forEach(key => {
+                if (data[key] === '') {
+                    data[key] = null;
+                }
+            });
+            
+            try {
+                const response = await fetch('/api/customers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('고객이 성공적으로 등록되었습니다!');
+                    loadCustomers();
+                } else {
+                    alert('등록 실패: ' + result.error);
+                }
+            } catch (error) {
+                console.error('등록 실패:', error);
+                alert('등록 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 새 행 취소
+        function cancelNewRow(button) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+
+        // 셀 편집 기능
+        function editCell(cell) {
+            if (cell.classList.contains('editing-cell')) return;
+            
+            const field = cell.dataset.field;
+            const type = cell.dataset.type;
+            const currentValue = cell.textContent.trim();
+            const displayValue = currentValue === '-' ? '' : currentValue;
+            
+            // 진행여부 셀의 경우 span 안의 텍스트 가져오기
+            let actualValue = displayValue;
+            if (field === 'progress_status') {
+                const badge = cell.querySelector('.status-badge');
+                actualValue = badge ? badge.textContent : displayValue;
+            }
+            
+            cell.classList.add('editing-cell');
+            
+            let inputElement;
+            if (type === 'select' && field === 'progress_status') {
+                inputElement = document.createElement('select');
+                inputElement.className = 'cell-select';
+                inputElement.innerHTML = `
+                    <option value="진행중" ${actualValue === '진행중' ? 'selected' : ''}>진행중</option>
+                    <option value="계약" ${actualValue === '계약' ? 'selected' : ''}>계약</option>
+                    <option value="보류" ${actualValue === '보류' ? 'selected' : ''}>보류</option>
+                `;
+            } else {
+                inputElement = document.createElement('input');
+                inputElement.className = 'cell-input';
+                inputElement.type = type;
+                inputElement.value = actualValue;
+                
+                if (type === 'date' && !actualValue) {
+                    inputElement.value = '';
+                }
+            }
+            
+            cell.innerHTML = '';
+            cell.appendChild(inputElement);
+            inputElement.focus();
+            
+            // 엔터키 또는 포커스 아웃 시 저장
+            const saveCell = () => {
+                const newValue = inputElement.value.trim();
+                const customerId = cell.closest('tr').dataset.customerId;
+                
+                updateCustomerField(customerId, field, newValue, cell);
+            };
+            
+            inputElement.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveCell();
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    cancelCellEdit(cell, currentValue);
+                }
+            });
+            
+            inputElement.addEventListener('blur', saveCell);
+        }
+        
+        // 셀 편집 취소
+        function cancelCellEdit(cell, originalValue) {
+            cell.classList.remove('editing-cell');
+            
+            if (cell.dataset.field === 'progress_status') {
+                            const statusClass = originalValue === '계약' ? 'status-complete' : 
+                               originalValue === '보류' ? 'status-hold' : 'status-progress';
+                cell.innerHTML = `<span class="status-badge ${statusClass}">${originalValue}</span>`;
+            } else {
+                cell.textContent = originalValue;
+            }
+        }
+        
+        // 고객 필드 업데이트
+        async function updateCustomerField(customerId, field, value, cell) {
+            try {
+                // 현재 고객 데이터 가져오기
+                const row = cell.closest('tr');
+                const cells = row.querySelectorAll('td');
+                
+                const data = {
+                    inquiry_date: cells[0].textContent.trim() || null,
+                    move_in_date: cells[1].textContent.trim() || null,
+                    customer_name: cells[2].textContent.trim() || null,
+                    customer_phone: cells[3].textContent.trim() || null,
+                    amount: cells[4].textContent.trim() === '-' ? null : cells[4].textContent.trim(),
+                    room_count: cells[5].textContent.trim() === '-' ? null : cells[5].textContent.trim(),
+                    location: cells[6].textContent.trim() || null,
+                    loan_info: cells[7].textContent.trim() === '-' ? null : cells[7].textContent.trim(),
+                    parking: cells[8].textContent.trim() === '-' ? null : cells[8].textContent.trim(),
+                    pets: cells[9].textContent.trim() === '-' ? null : cells[9].textContent.trim(),
+                    memo: '', // 메모는 별도 처리
+                    progress_status: cells[11].querySelector('.status-badge')?.textContent || '진행중'
+                };
+                
+                // 수정된 필드 값 업데이트
+                data[field] = value || null;
+                
+                const response = await fetch(`/api/customers/${customerId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(data)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    cell.classList.remove('editing-cell');
+                    
+                    // 셀 내용 업데이트
+                    if (field === 'progress_status') {
+                                    const statusClass = value === '계약' ? 'status-complete' : 
+                               value === '보류' ? 'status-hold' : 'status-progress';
+                        cell.innerHTML = `<span class="status-badge ${statusClass}">${value}</span>`;
+                    } else {
+                        cell.textContent = value || '-';
+                    }
+                } else {
+                    alert('수정 실패: ' + (result.error || '알 수 없는 오류'));
+                    cancelCellEdit(cell, cell.textContent);
+                }
+            } catch (error) {
+                console.error('수정 실패:', error);
+                alert('수정 중 오류가 발생했습니다.');
+                cancelCellEdit(cell, cell.textContent);
+            }
+        }
+
+
+
+        // 고객 삭제
+        async function deleteCustomer(customerId) {
+            if (!confirm('정말로 이 고객 정보를 삭제하시겠습니까?')) {
+                return;
+            }
+            
+            try {
+                const response = await fetch(`/api/customers/${customerId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    alert('고객 정보가 삭제되었습니다.');
+                    loadCustomers();
+                } else {
+                    alert('삭제 실패: ' + result.error);
+                }
+            } catch (error) {
+                console.error('삭제 실패:', error);
+                alert('삭제 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 메모 모달 관련 함수들
+        let currentMemoCustomerId = null;
+        
+        function openMemoModal(customerId, memo) {
+            currentMemoCustomerId = customerId;
+            document.getElementById('memo-textarea').value = memo || '';
+            document.getElementById('memo-modal').style.display = 'block';
+        }
+        
+        function closeMemoModal() {
+            document.getElementById('memo-modal').style.display = 'none';
+            currentMemoCustomerId = null;
+        }
+        
+        async function saveMemo() {
+            if (!currentMemoCustomerId) return;
+            
+            const memoText = document.getElementById('memo-textarea').value;
+            
+            try {
+                const response = await fetch(`/api/customers/${currentMemoCustomerId}/memo`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ memo: memoText })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    closeMemoModal();
+                    loadCustomers();
+                } else {
+                    alert('메모 저장 실패: ' + result.error);
+                }
+            } catch (error) {
+                console.error('메모 저장 실패:', error);
+                alert('메모 저장 중 오류가 발생했습니다.');
+            }
+        }
+
+        // 모달 외부 클릭 시 닫기
+        window.onclick = function(event) {
+            const editModal = document.getElementById('edit-modal');
+            const memoModal = document.getElementById('memo-modal');
+            if (event.target === editModal) {
+                closeEditModal();
+            }
+            if (event.target === memoModal) {
+                closeMemoModal();
+            }
+        }
+
+        // 주거사이트 링크 업데이트
+        function updatePropertySiteLink(element) {
+            const row = element.closest('tr');
+            const customerId = row.dataset.customerId;
+            const link = `http://localhost:5000/customer/${customerId}`;
+            element.href = link;
+            element.textContent = '주거사이트';
+        }
+
+        // 업무사이트 링크 업데이트  
+        function updateBusinessSiteLink(element) {
+            const row = element.closest('tr');
+            const customerId = row.dataset.customerId;
+            const link = `http://localhost:5001/customer/${customerId}`;
+            element.href = link;
+            element.textContent = '업무사이트';
+        }
+
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', () => {
+            loadCustomers();
+        });
+    </script>
+</body>
+</html> 

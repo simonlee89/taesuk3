@@ -1,0 +1,1114 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>직원 관리 - 집노트 CRM</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* 사이드바 */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #6366f1;
+        }
+        
+        .nav-item.active {
+            background: #f1f5f9;
+            color: #6366f1;
+            border-left-color: #6366f1;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 16px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 300px;
+            padding: 10px 16px 10px 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #6366f1;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        /* 사이트 전환 드롭다운 */
+        .site-switcher {
+            position: relative;
+        }
+        
+        .site-switcher-btn {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 16px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            box-shadow: 0 2px 4px rgba(99, 102, 241, 0.3);
+        }
+        
+        .site-switcher-btn:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(99, 102, 241, 0.4);
+        }
+        
+        .site-switcher-btn::after {
+            content: '▼';
+            font-size: 10px;
+            margin-left: 4px;
+            transition: transform 0.2s ease;
+        }
+        
+        .site-switcher.active .site-switcher-btn::after {
+            transform: rotate(180deg);
+        }
+        
+        .site-dropdown {
+            position: absolute;
+            top: 100%;
+            right: 0;
+            margin-top: 8px;
+            min-width: 220px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            opacity: 0;
+            visibility: hidden;
+            transform: translateY(-10px);
+            transition: all 0.2s ease;
+            z-index: 1000;
+        }
+        
+        .site-switcher.active .site-dropdown {
+            opacity: 1;
+            visibility: visible;
+            transform: translateY(0);
+        }
+        
+        .dropdown-header {
+            padding: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            font-weight: 600;
+            color: #1a202c;
+            font-size: 14px;
+        }
+        
+        .dropdown-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 16px;
+            color: #374151;
+            text-decoration: none;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .dropdown-item:hover {
+            background: #f9fafb;
+            color: #6366f1;
+            border-left-color: #6366f1;
+        }
+        
+        .dropdown-item .item-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+        }
+        
+        .dropdown-item .item-info {
+            flex: 1;
+        }
+        
+        .dropdown-item .item-title {
+            font-weight: 500;
+            margin-bottom: 2px;
+        }
+        
+        .dropdown-item .item-desc {
+            font-size: 12px;
+            color: #9ca3af;
+        }
+        
+        .dropdown-item .item-badge {
+            padding: 2px 8px;
+            background: #fef3c7;
+            color: #d97706;
+            border-radius: 6px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+        
+        .dropdown-item.residential .item-badge {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+        
+        .dropdown-item.business .item-badge {
+            background: #fef3c7;
+            color: #d97706;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+        
+        .user-email {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        /* 컨텐츠 영역 */
+        .content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            margin-bottom: 32px;
+        }
+        
+        .page-title {
+            font-size: 28px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 8px;
+        }
+        
+        .page-subtitle {
+            font-size: 16px;
+            color: #64748b;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: between;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a202c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .add-employee-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 16px;
+            align-items: end;
+            margin-bottom: 24px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .form-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        
+        .form-input, .form-select {
+            padding: 14px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .form-input:focus, .form-select:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5855eb;
+            transform: translateY(-1px);
+            box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+        }
+        
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        
+        .filter-section {
+            display: flex;
+            gap: 16px;
+            align-items: center;
+            margin-bottom: 20px;
+            padding: 20px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 1px solid #e2e8f0;
+        }
+        
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+        
+        .filter-label {
+            font-size: 12px;
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        .employees-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .employees-table th {
+            background: #f8fafc;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #374151;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .employees-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+        
+        .employees-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-active {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 사이드바 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🏠</div>
+                    <div class="logo-text">집노트 CRM</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item">
+                    <div class="nav-icon">📊</div>
+                    대시보드
+                </a>
+                <a href="/admin" class="nav-item active">
+                    <div class="nav-icon">👥</div>
+                    직원 관리
+                </a>
+                <a href="#guarantee-section" class="nav-item" onclick="activateGuaranteeTab(event)">
+                    <div class="nav-icon">🛡️</div>
+                    보증보험 매물
+                </a>
+                <a href="/logout" class="nav-item">
+                    <div class="nav-icon">🚪</div>
+                    로그아웃
+                </a>
+            </nav>
+        </div>
+        
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content">
+            <!-- 헤더 -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="search-box">
+                        <div class="search-icon">🔍</div>
+                        <input type="text" class="search-input" placeholder="직원 검색...">
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <!-- 사이트 전환 드롭다운 -->
+                    <div class="site-switcher" id="site-switcher">
+                        <button class="site-switcher-btn" onclick="toggleSiteSwitcher()">
+                            <span>🏢</span>
+                            사이트 관리
+                        </button>
+                        <div class="site-dropdown">
+                            <div class="dropdown-header">매물 사이트 전환</div>
+                            <a href="http://localhost:5000" target="_blank" class="dropdown-item residential">
+                                <div class="item-icon">🏡</div>
+                                <div class="item-info">
+                                    <div class="item-title">주거 사이트</div>
+                                    <div class="item-desc">아파트, 원룸, 오피스텔 매물</div>
+                                </div>
+                                <div class="item-badge">주거용</div>
+                            </a>
+                            <a href="http://localhost:5001" target="_blank" class="dropdown-item business">
+                                <div class="item-icon">🏢</div>
+                                <div class="item-info">
+                                    <div class="item-title">업무 사이트</div>
+                                    <div class="item-desc">오피스, 상가, 업무공간 매물</div>
+                                </div>
+                                <div class="item-badge">업무용</div>
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="user-profile">
+                        <div class="user-avatar">관</div>
+                        <div class="user-info">
+                            <div class="user-name">관리자</div>
+                            <div class="user-email">admin@zipnote.com</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 컨텐츠 -->
+            <div class="content">
+                <div class="page-header">
+                    <h1 class="page-title">직원 관리</h1>
+                    <p class="page-subtitle">직원 추가, 수정, 삭제 및 팀 관리</p>
+                </div>
+                <div id="alert-container"></div>
+
+                <!-- 탭 버튼 -->
+                <div style="display: flex; gap: 12px; margin-bottom: 24px;">
+                    <button id="tab-employee" class="btn btn-primary" onclick="showTab('employee')">직원 관리</button>
+                    <button id="tab-guarantee" class="btn btn-secondary" onclick="showTab('guarantee')">보증보험 매물</button>
+                </div>
+
+                <!-- 직원관리 카드 (탭) -->
+                <div id="employee-section">
+                    <!-- 새 직원 추가 토글 버튼 -->
+                    <button class="btn btn-primary" style="margin-bottom:12px; border-radius:10px; font-size:15px; padding:10px 18px; font-weight:600;" onclick="toggleAddEmployee()">
+                        <span style="font-size:18px;">➕</span> 새 직원 추가
+                    </button>
+                    <!-- 새 직원 추가 카드 (기본 숨김) -->
+                    <div class="card" id="add-employee-card" style="display:none; transition: max-height 0.3s; overflow:hidden;">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>➕</span>
+                                새 직원 추가
+                            </h2>
+                        </div>
+                        <form id="add-employee-form" class="add-employee-form">
+                            <div class="form-group">
+                                <label class="form-label">직원 아이디</label>
+                                <input type="text" id="employee_id" class="form-input" placeholder="직원 아이디" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">직원 이름</label>
+                                <input type="text" id="employee_name" class="form-input" placeholder="직원 이름" required>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">팀</label>
+                                <input type="text" id="team" class="form-input" placeholder="소속 팀" required>
+                            </div>
+                            <div class="form-group">
+                                <button type="submit" class="btn btn-primary" id="add-btn">
+                                    <span>➕</span>
+                                    직원 추가
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                    <!-- 직원 목록 카드 -->
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>👥</span>
+                                직원 목록
+                            </h2>
+                        </div>
+                        <!-- 필터 섹션 -->
+                        <div class="filter-section" style="display: flex; align-items: flex-end; gap: 20px; background: #f4f6fb; border-radius: 16px; border: 1px solid #e0e7ef; margin-bottom: 18px; padding: 18px 24px; box-shadow: 0 2px 8px rgba(99,102,241,0.04);">
+                            <div class="filter-group" style="min-width: 80px;">
+                                <label class="filter-label" style="font-size:13px; font-weight:600; color:#6366f1; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                                    <span style="font-size:16px;">🔎</span> 상태
+                                </label>
+                                <select id="status-filter" class="form-select" style="width:80px; border-radius: 10px; border: 1.5px solid #c7d2fe; background: #fff; font-size:14px; padding:10px 14px;">
+                                    <option value="">전체</option>
+                                    <option value="1">활성</option>
+                                    <option value="0">비활성</option>
+                                </select>
+                            </div>
+                            <div class="filter-group" style="min-width: 80px;">
+                                <label class="filter-label" style="font-size:13px; font-weight:600; color:#6366f1; margin-bottom:6px; display:flex; align-items:center; gap:6px;">
+                                    <span style="font-size:16px;">👥</span> 팀
+                                </label>
+                                <select id="team-filter" class="form-select" style="width:80px; border-radius: 10px; border: 1.5px solid #c7d2fe; background: #fff; font-size:14px; padding:10px 14px;">
+                                    <option value="">전체 팀</option>
+                                </select>
+                            </div>
+                            <div class="form-group" style="margin-left:auto;">
+                                <button type="button" class="btn btn-secondary" style="border-radius:10px; font-size:14px; padding:10px 18px; background:#e0e7ff; color:#3730a3; border:1.5px solid #c7d2fe; font-weight:600; display:flex; align-items:center; gap:6px;" onclick="loadEmployees()">
+                                    <span style="font-size:16px;">🔄</span>
+                                    새로고침
+                                </button>
+                            </div>
+                        </div>
+                        <div class="table-container">
+                            <table class="employees-table">
+                                <thead>
+                                    <tr>
+                                        <th>직원 아이디</th>
+                                        <th>이름</th>
+                                        <th>팀</th>
+                                        <th>등록일</th>
+                                        <th>상태</th>
+                                        <th>작업</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="employees-list">
+                                    <!-- 직원 목록이 여기에 동적으로 추가됩니다 -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 보증보험 매물 카드 (탭) -->
+                <div id="guarantee-section" style="display:none;">
+                    <div class="card">
+                        <div class="card-header">
+                            <h2 class="card-title">
+                                <span>🛡️</span>
+                                보증보험 매물 리스트
+                            </h2>
+                        </div>
+                        <div class="table-container">
+                            <table class="employees-table">
+                                <thead>
+                                    <tr>
+                                        <th>번호</th>
+                                        <th>URL</th>
+                                        <th>플랫폼</th>
+                                        <th>등록자</th>
+                                        <th>등록일</th>
+                                        <th>메모</th>
+                                        <th>작업</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% if guarantee_list and guarantee_list|length > 0 %}
+                                        {% for row in guarantee_list %}
+                                        <tr>
+                                            <td>{{ loop.revindex }}</td>
+                                            <td><a href="{{ row[1] }}" target="_blank">{{ row[1] }}</a></td>
+                                            <td>{{ row[2] }}</td>
+                                            <td>{{ row[3] }}</td>
+                                            <td>{{ row[4] }}</td>
+                                            <td>
+                                                <form method="POST" action="{{ url_for('guarantee_edit', id=row[0]) }}">
+                                                    <input type="text" name="memo" value="{{ row[5] or '' }}" style="width:100px;">
+                                                    <button type="submit" class="btn btn-sm btn-primary">수정</button>
+                                                </form>
+                                            </td>
+                                            <td>
+                                                <form method="POST" action="{{ url_for('guarantee_delete', id=row[0]) }}" style="display:inline;">
+                                                    <button type="submit" class="btn btn-sm btn-danger" onclick="return confirm('정말 삭제하시겠습니까?')">삭제</button>
+                                                </form>
+                                            </td>
+                                        </tr>
+                                        {% endfor %}
+                                    {% else %}
+                                        <tr>
+                                            <td colspan="7" style="text-align:center; color:#64748b;">등록된 보증보험 매물이 없습니다.</td>
+                                        </tr>
+                                    {% endif %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let employees = [];
+        
+        // 사이트 전환 드롭다운 토글
+        function toggleSiteSwitcher() {
+            const switcher = document.getElementById('site-switcher');
+            switcher.classList.toggle('active');
+        }
+        
+        // 외부 클릭 시 드롭다운 닫기
+        document.addEventListener('click', function(event) {
+            const switcher = document.getElementById('site-switcher');
+            if (!switcher.contains(event.target)) {
+                switcher.classList.remove('active');
+            }
+        });
+        
+        // 페이지 로드 시 직원 목록 불러오기
+        document.addEventListener('DOMContentLoaded', function() {
+            showTab('employee');
+            loadEmployees();
+        });
+        
+        // 직원 목록 불러오기
+        async function loadEmployees() {
+            try {
+                const response = await fetch('/api/employees');
+                employees = await response.json();
+                
+                displayEmployees(employees);
+                updateTeamFilter();
+            } catch (error) {
+                showAlert('직원 목록을 불러오는데 실패했습니다.', 'error');
+            }
+        }
+        
+        // 직원 목록 표시
+        function displayEmployees(employeeList) {
+            const tbody = document.getElementById('employees-list');
+            
+            if (employeeList.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="6" style="text-align: center; padding: 40px; color: #64748b;">등록된 직원이 없습니다.</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = employeeList.map(emp => `
+                <tr>
+                    <td><strong>${emp.employee_id}</strong></td>
+                    <td>${emp.employee_name}</td>
+                    <td><span class="status-badge" style="background: #e0e7ff; color: #3730a3;">${emp.team}</span></td>
+                    <td>${emp.created_date}</td>
+                    <td>
+                        <span class="status-badge ${emp.is_active ? 'status-active' : 'status-inactive'}">
+                            ${emp.is_active ? '활성' : '비활성'}
+                        </span>
+                    </td>
+                    <td>
+                        <div class="action-buttons">
+                            ${emp.is_active ? 
+                                `<button class="btn btn-danger btn-sm" onclick="deactivateEmployee(${emp.id})">비활성화</button>` :
+                                `<button class="btn btn-success btn-sm" onclick="activateEmployee(${emp.id})">활성화</button>`
+                            }
+                            <button class="btn btn-secondary btn-sm" onclick="resetPassword(${emp.id})">비밀번호 재설정</button>
+                            ${!emp.is_active ? 
+                                `<button class="btn btn-danger btn-sm" onclick="permanentDelete(${emp.id})">완전삭제</button>` : ''
+                            }
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+        
+        // 팀 필터 업데이트
+        function updateTeamFilter() {
+            const teamFilter = document.getElementById('team-filter');
+            const teams = [...new Set(employees.map(emp => emp.team).filter(team => team))];
+            
+            teamFilter.innerHTML = '<option value="">전체 팀</option>' + 
+                teams.map(team => `<option value="${team}">${team}</option>`).join('');
+        }
+        
+        // 필터 적용
+        document.getElementById('status-filter').addEventListener('change', applyFilters);
+        document.getElementById('team-filter').addEventListener('change', applyFilters);
+        
+        function applyFilters() {
+            const statusFilter = document.getElementById('status-filter').value;
+            const teamFilter = document.getElementById('team-filter').value;
+            
+            let filteredEmployees = employees;
+            
+            if (statusFilter !== '') {
+                filteredEmployees = filteredEmployees.filter(emp => emp.is_active == statusFilter);
+            }
+            
+            if (teamFilter !== '') {
+                filteredEmployees = filteredEmployees.filter(emp => emp.team === teamFilter);
+            }
+            
+            displayEmployees(filteredEmployees);
+        }
+        
+        // 직원 추가
+        document.getElementById('add-employee-form').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById('add-btn');
+            btn.classList.add('loading');
+            btn.disabled = true;
+            
+            const formData = {
+                employee_id: document.getElementById('employee_id').value,
+                employee_name: document.getElementById('employee_name').value,
+                team: document.getElementById('team').value,
+                password: '1234'
+            };
+            
+            try {
+                const response = await fetch('/api/employees', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(formData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('직원이 성공적으로 추가되었습니다.', 'success');
+                    document.getElementById('add-employee-form').reset();
+                    loadEmployees();
+                } else {
+                    showAlert(result.message || '직원 추가에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            } finally {
+                btn.classList.remove('loading');
+                btn.disabled = false;
+            }
+        });
+        
+        // 직원 비활성화
+        async function deactivateEmployee(empId) {
+            if (!confirm('이 직원을 비활성화하시겠습니까?')) return;
+            
+            try {
+                const response = await fetch(`/api/employees/${empId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('직원이 비활성화되었습니다.', 'success');
+                    loadEmployees();
+                } else {
+                    showAlert('비활성화에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // 직원 활성화
+        async function activateEmployee(empId) {
+            try {
+                const response = await fetch(`/api/employees/${empId}/activate`, {
+                    method: 'PUT'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('직원이 활성화되었습니다.', 'success');
+                    loadEmployees();
+                } else {
+                    showAlert('활성화에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // 비밀번호 재설정
+        async function resetPassword(empId) {
+            const newPassword = prompt('새 비밀번호를 입력하세요 (기본값: 1234):', '1234');
+            if (!newPassword) return;
+            
+            try {
+                const response = await fetch(`/api/employees/${empId}/reset-password`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ new_password: newPassword })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('비밀번호가 재설정되었습니다.', 'success');
+                } else {
+                    showAlert(result.message || '비밀번호 재설정에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // 완전 삭제
+        async function permanentDelete(empId) {
+            if (!confirm('이 직원을 완전히 삭제하시겠습니까? 이 작업은 되돌릴 수 없습니다.')) return;
+            
+            try {
+                const response = await fetch(`/api/employees/${empId}/permanent-delete`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('직원이 완전히 삭제되었습니다.', 'success');
+                    loadEmployees();
+                } else {
+                    showAlert(result.message || '삭제에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // 알림 표시
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        function activateGuaranteeTab(e) {
+            e.preventDefault();
+            showTab('guarantee');
+            const section = document.getElementById('guarantee-section');
+            if (section) {
+                section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        function showTab(tab) {
+            const emp = document.getElementById('employee-section');
+            const guar = document.getElementById('guarantee-section');
+            const tabEmp = document.getElementById('tab-employee');
+            const tabGuar = document.getElementById('tab-guarantee');
+            if(tab === 'employee') {
+                emp.style.display = '';
+                guar.style.display = 'none';
+                tabEmp.classList.add('btn-primary');
+                tabEmp.classList.remove('btn-secondary');
+                tabGuar.classList.add('btn-secondary');
+                tabGuar.classList.remove('btn-primary');
+            } else {
+                emp.style.display = 'none';
+                guar.style.display = '';
+                tabEmp.classList.remove('btn-primary');
+                tabEmp.classList.add('btn-secondary');
+                tabGuar.classList.remove('btn-secondary');
+                tabGuar.classList.add('btn-primary');
+            }
+        }
+
+        function toggleAddEmployee() {
+            const card = document.getElementById('add-employee-card');
+            if (card.style.display === 'none' || card.style.display === '') {
+                card.style.display = 'block';
+            } else {
+                card.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html> 

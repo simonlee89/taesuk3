@@ -4,7 +4,75 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>집노트</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css');
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;600;700&display=swap');
+        
+        :root {
+            /* Toss 브랜드 색상 팔레트 🔷 */
+            --toss-blue: #3182F6;
+            --toss-blue-light: #E3F2FD;
+            --toss-blue-dark: #1565C0;
+            --toss-gray-50: #F8FAFC;
+            --toss-gray-100: #F1F5F9;
+            --toss-gray-200: #E2E8F0;
+            --toss-gray-300: #CBD5E1;
+            --toss-gray-400: #94A3B8;
+            --toss-gray-500: #64748B;
+            --toss-gray-600: #475569;
+            --toss-gray-700: #334155;
+            --toss-gray-800: #1E293B;
+            --toss-gray-900: #0F172A;
+            
+            /* 시스템 색상 */
+            --success-color: #10B981;
+            --warning-color: #F59E0B;
+            --error-color: #EF4444;
+            --info-color: var(--toss-blue);
+            
+            /* 배경 */
+            --bg-main: #FFFFFF;
+            --bg-section: var(--toss-gray-50);
+            --bg-card: #FFFFFF;
+            --bg-hover: var(--toss-gray-100);
+            
+            /* 텍스트 색상 */
+            --text-primary: var(--toss-gray-900);
+            --text-secondary: var(--toss-gray-600);
+            --text-muted: var(--toss-gray-500);
+            --text-white: #FFFFFF;
+            --text-blue: var(--toss-blue);
+            
+            /* 그림자 - 미니멀하고 깔끔한 느낌 */
+            --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+            --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            --shadow-xl: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.1), 0 1px 2px 0 rgba(0, 0, 0, 0.06);
+            
+            /* 테두리 */
+            --border-light: var(--toss-gray-200);
+            --border-medium: var(--toss-gray-300);
+            --border-radius: 12px;
+            --border-radius-lg: 16px;
+            --border-radius-xl: 20px;
+            
+            /* 애니메이션 - 부드럽고 자연스러운 느낌 */
+            --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
+            --ease-bounce: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* 간격 */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            --spacing-2xl: 48px;
+            --spacing-3xl: 64px;
+        }
+        
         * {
             margin: 0;
             padding: 0;
@@ -12,283 +80,497 @@
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            background-color: #f8f9fa;
-            line-height: 1.5;
-            color: #333;
+            font-family: 'Pretendard', 'Noto Sans KR', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            min-height: 100vh;
+            line-height: 1.6;
+            color: var(--text-primary);
+            font-weight: 400;
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            font-size: 16px; /* 기본 글씨 크기 증가 */
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* 부드러운 스크롤 애니메이션 */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        /* Toss 스타일 애니메이션 - 미묘하고 자연스러운 */
+        @keyframes fade-in {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        
+        @keyframes gentle-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-4px); }
+        }
+        
+        @keyframes slide-in {
+            0% { opacity: 0; transform: translateX(-20px); }
+            100% { opacity: 1; transform: translateX(0); }
         }
         
         .header {
-            background: linear-gradient(135deg, #0066ff 0%, #004cc7 100%);
-            color: white;
-            padding: 20px 16px;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            padding: var(--spacing-lg) 0;
             position: sticky;
             top: 0;
             z-index: 100;
-            box-shadow: 0 2px 20px rgba(0, 102, 255, 0.15);
+            box-shadow: var(--shadow-sm);
+            border-bottom: 1px solid var(--border-light);
+            animation: fade-in 0.6s var(--ease-out);
+            backdrop-filter: blur(8px);
+            -webkit-backdrop-filter: blur(8px);
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.95);
+            z-index: -1;
         }
         
         .header-content {
-            max-width: 768px;
+            max-width: 1200px;
             margin: 0 auto;
+            padding: 0 24px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
         
         .logo {
-            font-size: 20px;
+            font-family: 'Pretendard', sans-serif;
+            font-size: 28px;
             font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--spacing-md);
+            color: var(--text-primary);
+            letter-spacing: -0.02em;
+            transition: all 0.2s var(--ease-out);
+        }
+        
+        .logo::before {
+            content: '🏡';
+            font-size: 28px;
+            animation: gentle-bounce 4s ease-in-out infinite;
+            transition: transform 0.2s var(--ease-out);
+        }
+        
+        .logo:hover::before {
+            transform: scale(1.1);
         }
         
         .customer-info {
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 500;
             display: flex;
             align-items: center;
-            gap: 8px;
+            gap: var(--spacing-md);
+            color: var(--text-secondary);
         }
         
-        .customer-name {
+        .customer-name, .date-selector {
             cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            transition: background 0.2s;
-        }
-        
-        .customer-name:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .date-selector {
-            cursor: pointer;
-            padding: 4px 8px;
-            border-radius: 8px;
-            background: rgba(255, 255, 255, 0.2);
-            transition: background 0.2s;
-            font-size: 14px;
-        }
-        
-        .date-selector:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-        
-        .container {
-            max-width: 768px;
-            margin: 0 auto;
-            padding: 16px;
-        }
-        
-        .card {
-            background: white;
-            border-radius: 16px;
-            padding: 20px;
-            margin-bottom: 16px;
-            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-        }
-        
-        .card-title {
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 16px;
-            color: #191f28;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-        }
-        
-        .loan-section {
-            margin-bottom: 20px;
-        }
-        
-        .loan-item {
-            background: #f8f9fa;
-            border-radius: 12px;
-            padding: 16px;
-            margin-bottom: 12px;
-            border-left: 4px solid #0066ff;
-            cursor: pointer;
-            transition: all 0.2s ease;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            background: var(--bg-hover);
+            transition: all 0.2s var(--ease-out);
+            border: 1px solid var(--border-light);
+            font-weight: 500;
+            color: var(--text-primary);
             position: relative;
         }
         
-        .loan-item:hover {
-            background: #e9ecef;
+        .customer-name:hover, .date-selector:hover {
+            background: var(--toss-blue-light);
+            border-color: var(--toss-blue);
+            color: var(--text-blue);
             transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+        }
+        
+        .date-selector {
+            font-size: 14px;
+            font-weight: 400;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-lg);
+        }
+        
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-2xl);
+            margin-bottom: var(--spacing-xl);
+            box-shadow: var(--shadow-card);
+            border: 1px solid var(--border-light);
+            transition: all 0.2s var(--ease-out);
+            position: relative;
+            animation: fade-in 0.6s var(--ease-out);
+        }
+        
+        .card::after {
+            content: '✨';
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            font-size: 20px;
+            opacity: 0.7;
+            animation: float 3s ease-in-out infinite;
+        }
+        
+        .card:hover {
+            box-shadow: var(--shadow-lg);
+            transform: translateY(-4px);
+            border-color: var(--toss-blue-light);
+        }
+        
+        .card:hover::after {
+            opacity: 1;
+            transform: scale(1.1);
+        }
+        
+        .card-title {
+            font-family: 'Pretendard', sans-serif;
+            font-size: 36px; /* 32px → 36px로 증가 */
+            font-weight: 700;
+            margin-bottom: var(--spacing-xl);
+            color: var(--text-primary);
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-md);
+            letter-spacing: -0.02em;
+            line-height: 1.3;
+        }
+        
+        .card-title::before {
+            content: '🎯';
+            font-size: 32px;
+            animation: gentle-bounce 4s ease-in-out infinite;
+        }
+        
+        .loan-section {
+            margin-bottom: 32px;
+        }
+        
+        .loan-item {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            cursor: pointer;
+            transition: all 0.2s var(--ease-out);
+            box-shadow: var(--shadow-card);
+            position: relative;
+            color: var(--text-primary);
+            border: 1px solid var(--border-light);
+            font-weight: 500;
+        }
+        
+        .loan-item::before {
+            content: '🏦';
+            position: absolute;
+            top: var(--spacing-lg);
+            right: var(--spacing-lg);
+            font-size: 20px;
+            opacity: 0.7;
+            animation: gentle-bounce 4s ease-in-out infinite;
+        }
+        
+        .loan-item:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--toss-blue-light);
+        }
+        
+        .loan-item:hover::before {
+            opacity: 1;
+            transform: scale(1.1);
         }
         
         .loan-item.active {
-            background: #e7f3ff;
-            border-left-color: #0066ff;
+            background: var(--toss-blue-light);
+            border-color: var(--toss-blue);
+            box-shadow: var(--shadow-lg);
+        }
+        
+        .loan-item.active::before {
+            content: '✨';
+            opacity: 1;
         }
         
         .loan-title {
             font-weight: 600;
-            color: #191f28;
+            color: var(--text-primary);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            font-size: 20px;
+            letter-spacing: -0.01em;
+            line-height: 1.4;
         }
         
         .loan-toggle {
-            font-size: 12px;
-            color: #6c757d;
-            transition: transform 0.2s ease;
+            font-size: 18px;
+            color: var(--text-secondary);
+            transition: all 0.2s var(--ease-out);
+            font-weight: 500;
+        }
+        
+        .loan-toggle::before {
+            content: '🔽';
         }
         
         .loan-item.active .loan-toggle {
-            transform: rotate(180deg);
+            color: var(--toss-blue);
+        }
+        
+        .loan-item.active .loan-toggle::before {
+            content: '🔼';
         }
         
         .loan-details {
-            margin-top: 12px;
-            padding-top: 12px;
-            border-top: 1px solid #e9ecef;
+            margin-top: var(--spacing-lg);
+            padding-top: var(--spacing-lg);
+            border-top: 1px solid var(--border-light);
             display: none;
-            font-size: 14px;
+            font-size: 16px;
             line-height: 1.6;
-            color: #495057;
+            color: var(--text-secondary);
+            font-weight: 400;
         }
         
         .loan-item.active .loan-details {
             display: block;
+            animation: fade-in 0.4s var(--ease-out);
         }
         
         .loan-formula {
-            background: #fff3cd;
-            padding: 12px;
-            border-radius: 8px;
-            margin: 8px 0;
-            font-family: 'Courier New', monospace;
-            font-size: 13px;
-            border-left: 3px solid #ffc107;
+            background: var(--bg-section);
+            border: 1px solid var(--border-light);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius);
+            margin: var(--spacing-lg) 0;
+            font-family: 'Pretendard', monospace;
+            font-size: 15px;
+            color: var(--text-primary);
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .loan-formula::before {
+            content: '💡';
+            position: absolute;
+            top: -8px;
+            right: var(--spacing-lg);
+            font-size: 20px;
+            background: var(--bg-card);
+            padding: var(--spacing-xs);
+            border-radius: 50%;
+            border: 1px solid var(--border-light);
         }
         
         .add-link-form {
-            margin-bottom: 20px;
+            margin-bottom: 40px;
         }
         
         .form-group {
-            margin-bottom: 16px;
+            margin-bottom: 24px;
         }
         
         .form-label {
             display: block;
-            font-size: 14px;
+            font-size: 18px; /* 14px → 18px로 증가 */
             font-weight: 600;
-            color: #191f28;
-            margin-bottom: 8px;
+            color: var(--text-primary); /* 더 선명한 색상으로 변경 */
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
         }
         
         .form-input {
             width: 100%;
-            padding: 16px;
-            border: 1px solid #e9ecef;
+            padding: 16px 20px;
+            border: 1px solid rgba(241, 245, 249, 0.8);
             border-radius: 12px;
             font-size: 16px;
-            background: #f8f9fa;
-            transition: all 0.2s ease;
+            background: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            transition: var(--transition-smooth);
+            color: var(--sky-charcoal);
+            font-family: inherit;
+            box-shadow: var(--shadow-soft);
+            position: relative;
         }
         
         .form-input:focus {
             outline: none;
-            border-color: #0066ff;
-            background: white;
-            box-shadow: 0 0 0 3px rgba(0, 102, 255, 0.1);
+            border-color: var(--sky-blue-solid);
+            box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15), var(--shadow-medium);
+            background: rgba(255, 255, 255, 0.95);
+            transform: translateY(-1px);
+        }
+        
+        .form-input:hover {
+            border-color: rgba(74, 144, 226, 0.3);
+            box-shadow: var(--shadow-medium);
         }
         
         .button-row {
             display: flex;
-            gap: 8px;
+            gap: 12px;
             flex-wrap: wrap;
         }
         
         .btn-toggle {
             flex: 1;
-            min-width: 80px;
-            padding: 12px 16px;
-            border: 2px solid #e9ecef;
-            background: white;
-            color: #6c757d;
-            border-radius: 12px;
+            min-width: 100px;
+            padding: var(--spacing-md) var(--spacing-lg);
+            border: 2px solid var(--border-medium); /* 테두리 두껍게 */
+            background: var(--toss-gray-100); /* 연한 회색 배경으로 변경 */
+            color: var(--text-primary); /* 더 진한 글씨색 */
+            border-radius: var(--border-radius);
             cursor: pointer;
-            font-size: 14px;
-            font-weight: 600;
-            transition: all 0.2s ease;
+            font-size: 18px; /* 16px → 18px로 증가 */
+            font-weight: 600; /* 500 → 600으로 굵게 */
+            transition: all 0.2s var(--ease-out);
             text-align: center;
+            font-family: inherit;
+            position: relative;
         }
         
         .btn-toggle:hover {
-            border-color: #0066ff;
-            color: #0066ff;
+            color: var(--text-primary);
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
+            border-color: var(--toss-blue-light);
         }
         
         .btn-toggle.active {
-            color: white;
-            border-color: transparent;
+            background: var(--toss-blue);
+            color: var(--text-white);
+            border-color: var(--toss-blue);
+            box-shadow: var(--shadow-md);
         }
         
-        /* 플랫폼 색상 */
+        .btn-toggle.active::after {
+            content: '✨';
+            position: absolute;
+            top: -4px;
+            right: -4px;
+            font-size: 12px;
+            animation: gentle-bounce 2s ease-in-out infinite;
+        }
+        
+        /* 플랫폼별 고유 색상 - 파스텔 톤 */
         .btn-toggle[data-platform="zigbang"].active {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: #FFB3A6; /* 직방 파스텔 복숭아 */
+            color: #6B4F47;
+            border-color: #FFB3A6;
+            box-shadow: var(--shadow-md);
         }
         
         .btn-toggle[data-platform="naver"].active {
-            background: linear-gradient(135deg, #03c75a 0%, #00b448 100%);
+            background: #A8E6CF; /* 네이버 파스텔 민트 */
+            color: #3A6B47;
+            border-color: #A8E6CF;
+            box-shadow: var(--shadow-md);
         }
         
         .btn-toggle[data-platform="other"].active {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: #D4B6FF; /* 파스텔 라벤더 */
+            color: #5A4A7C;
+            border-color: #D4B6FF;
+            box-shadow: var(--shadow-md);
         }
         
-        /* 추가자 색상 */
+        /* 사용자별 고유 색상 - 파스텔 톤 */
         .btn-toggle[data-user="중개사"].active {
-            background: linear-gradient(135deg, #0066ff 0%, #004cc7 100%);
+            background: #FFB6C1; /* 파스텔 로즈 */
+            color: #8B4560;
+            border-color: #FFB6C1;
+            box-shadow: var(--shadow-md);
         }
         
         .btn-toggle[data-user="손님"].active {
-            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            background: #B8E6FF; /* 파스텔 하늘색 */
+            color: #4A7A99;
+            border-color: #B8E6FF;
+            box-shadow: var(--shadow-md);
         }
         
         .btn-primary {
             width: 100%;
-            padding: 16px;
-            background: linear-gradient(135deg, #0066ff 0%, #004cc7 100%);
-            color: white;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: var(--toss-blue);
+            color: var(--text-white);
             border: none;
-            border-radius: 12px;
-            font-size: 16px;
+            border-radius: var(--border-radius);
+            font-size: 18px;
             font-weight: 600;
             cursor: pointer;
-            transition: all 0.2s ease;
-            margin-top: 8px;
+            transition: all 0.2s var(--ease-out);
+            margin-top: var(--spacing-lg);
+            font-family: inherit;
+            letter-spacing: -0.01em;
+            box-shadow: var(--shadow-md);
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+        }
+        
+        .btn-primary::before {
+            content: '🚀';
+            font-size: 18px;
+            animation: gentle-bounce 3s ease-in-out infinite;
         }
         
         .btn-primary:hover {
-            transform: translateY(-1px);
-            box-shadow: 0 4px 20px rgba(0, 102, 255, 0.3);
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-lg);
+            background: var(--toss-blue-dark);
         }
         
         .btn-primary:active {
             transform: translateY(0);
+            box-shadow: var(--shadow-md);
         }
         
         .filters {
-            background: #f8f9fa;
-            padding: 16px;
-            border-radius: 12px;
-            margin-bottom: 16px;
+            background: white;
+            padding: 28px;
+            border-radius: 20px;
+            margin-bottom: 24px;
+            box-shadow: var(--shadow-md);
+            border: none;
         }
         
         .filter-row {
             display: flex;
-            gap: 8px;
-            margin-bottom: 12px;
+            gap: 16px;
+            margin-bottom: 20px;
             flex-wrap: wrap;
             align-items: center;
         }
@@ -299,169 +581,282 @@
         
         .filter-group {
             display: flex;
-            gap: 4px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
         .filter-btn {
-            padding: 8px 12px;
-            border: 1px solid #e9ecef;
-            background: white;
-            border-radius: 20px;
+            padding: 12px 20px; /* 패딩 증가 */
+            border: 2px solid var(--border-medium); /* 테두리 추가 */
+            background: var(--toss-gray-100); /* 더 선명한 배경 */
+            border-radius: 25px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            transition: all 0.2s ease;
+            font-size: 16px; /* 13px → 16px로 증가 */
+            font-weight: 600;
+            transition: var(--transition-all);
             white-space: nowrap;
+            color: var(--text-primary); /* 더 진한 글씨색 */
+            font-family: inherit;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .filter-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
+            color: var(--primary-blue);
         }
         
         .filter-btn.active {
-            background: #0066ff;
+            background: var(--toss-blue); /* 그라데이션 대신 단색 */
             color: white;
-            border-color: #0066ff;
+            border-color: var(--toss-blue); /* 테두리도 같은 색상 */
+            box-shadow: var(--shadow-md);
+        }
+        
+        /* 필터 버튼별 고유 색상 - 파스텔 톤 */
+        .filter-btn[data-value="zigbang"].active {
+            background: #FFB3A6; /* 직방 파스텔 복숭아 */
+            color: #6B4F47;
+            border-color: #FFB3A6;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filter-btn[data-value="naver"].active {
+            background: #A8E6CF; /* 네이버 파스텔 민트 */
+            color: #3A6B47;
+            border-color: #A8E6CF;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filter-btn[data-value="other"].active {
+            background: #D4B6FF; /* 파스텔 라벤더 */
+            color: #5A4A7C;
+            border-color: #D4B6FF;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filter-btn[data-value="중개사"].active {
+            background: #FFB6C1; /* 파스텔 로즈 */
+            color: #8B4560;
+            border-color: #FFB6C1;
+            box-shadow: var(--shadow-md);
+        }
+        
+        .filter-btn[data-value="손님"].active {
+            background: #B8E6FF; /* 파스텔 하늘색 */
+            color: #4A7A99;
+            border-color: #B8E6FF;
+            box-shadow: var(--shadow-md);
         }
         
         .date-filter {
             padding: 8px 12px;
-            border: 1px solid #e9ecef;
-            border-radius: 8px;
+            border: 1px solid var(--sky-light-gray);
+            border-radius: 4px;
             font-size: 12px;
             background: white;
+            color: var(--sky-charcoal);
+            font-family: inherit;
+        }
+        
+        .search-btn, .clear-filters-btn {
+            padding: 14px 24px;
+            border: none;
+            border-radius: 20px;
+            font-size: 16px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: var(--transition-all);
+            font-family: inherit;
+            min-height: 48px;
         }
         
         .search-btn {
-            padding: 8px 16px;
-            background: #28a745;
+            background: var(--gradient-green);
             color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .search-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
         
         .clear-filters-btn {
-            padding: 8px 16px;
-            background: #6c757d;
+            background: var(--text-muted);
             color: white;
-            border: none;
-            border-radius: 20px;
-            font-size: 12px;
-            cursor: pointer;
-            font-weight: 500;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .clear-filters-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-md);
         }
         
         .link-item {
-            background: white;
-            border-radius: 12px;
-            padding: 12px;
-            margin-bottom: 8px;
-            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
-            border: 1px solid rgba(0, 0, 0, 0.04);
-            transition: all 0.2s ease;
+            background: var(--bg-card);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-xl);
+            margin-bottom: var(--spacing-lg);
+            box-shadow: var(--shadow-card);
+            transition: all 0.2s var(--ease-out);
             position: relative;
+            border: 1px solid var(--border-light);
+            animation: fade-in 0.6s var(--ease-out);
+        }
+        
+        .link-item::before {
+            content: '🏠';
+            position: absolute;
+            top: var(--spacing-md);
+            right: var(--spacing-lg);
+            font-size: 20px;
+            opacity: 0.7;
+            animation: gentle-bounce 4s ease-in-out infinite;
         }
         
         .link-number {
             position: absolute;
-            top: -8px;
-            left: -8px;
-            background: linear-gradient(135deg, #ff6b6b, #ff8e8e);
-            color: white;
-            font-weight: 800;
-            font-size: 14px;
-            width: 32px;
-            height: 32px;
+            top: -12px;
+            left: -12px;
+            background: var(--toss-blue);
+            color: var(--text-white);
+            font-weight: 600;
+            font-size: 16px;
+            width: 36px;
+            height: 36px;
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 4px 12px rgba(255, 107, 107, 0.3);
+            box-shadow: var(--shadow-md);
             z-index: 10;
+            transition: all 0.2s var(--ease-out);
+            border: 2px solid var(--bg-card);
         }
         
         .link-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-lg);
+            border-color: var(--toss-blue-light);
+        }
+        
+        .link-item:hover .link-number {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-md);
+            background: var(--toss-blue);
+            color: var(--text-white);
+            border-color: var(--toss-blue);
+        }
+        
+        .link-item:hover::before {
+            opacity: 1;
+            transform: scale(1.1);
         }
         
         .link-item.liked {
-            background: linear-gradient(135deg, #f0fff4 0%, #dcfce7 100%);
-            border-color: #22c55e;
+            background: var(--success-color);
+            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1) 0%, rgba(16, 185, 129, 0.05) 100%);
+            border-color: var(--success-color);
+            box-shadow: 0 4px 12px rgba(16, 185, 129, 0.15);
+            animation: fade-in 0.6s var(--ease-out);
+        }
+        
+        .link-item.liked::before {
+            content: '💚';
+            opacity: 1;
         }
         
         .link-item.disliked {
-            background: linear-gradient(135deg, #fef2f2 0%, #fee2e2 100%);
-            border-color: #ef4444;
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1) 0%, rgba(239, 68, 68, 0.05) 100%);
+            border-color: var(--error-color);
+            box-shadow: 0 4px 12px rgba(239, 68, 68, 0.15);
+            animation: fade-in 0.6s var(--ease-out);
+        }
+        
+        .link-item.disliked::before {
+            content: '💔';
+            opacity: 1;
         }
         
         .link-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 8px;
-            gap: 8px;
+            margin-bottom: 16px;
+            gap: 16px;
         }
         
         .link-badges {
             display: flex;
-            gap: 6px;
+            gap: 8px;
             flex-wrap: wrap;
         }
         
         .badge {
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-size: 11px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            font-size: 14px;
             font-weight: 600;
-            color: white;
+            color: var(--text-white);
+            letter-spacing: 0.01em;
+            border: none;
+            position: relative;
+            transition: all 0.2s var(--ease-out);
+            box-shadow: var(--shadow-sm);
         }
         
         .badge-zigbang {
-            background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+            background: #FFB3A6;  /* 직방 파스텔 복숭아 */
+            color: #6B4F47;
         }
         
         .badge-naver {
-            background: linear-gradient(135deg, #03c75a 0%, #00b448 100%);
+            background: #A8E6CF;  /* 네이버 파스텔 민트 */
+            color: #3A6B47;
         }
         
         .badge-other {
-            background: linear-gradient(135deg, #8b5cf6 0%, #7c3aed 100%);
+            background: #D4B6FF;  /* 파스텔 라벤더 */
+            color: #5A4A7C;
         }
         
         .badge-broker {
-            background: linear-gradient(135deg, #0066ff 0%, #004cc7 100%);
+            background: #FFB6C1;  /* 파스텔 로즈 */
+            color: #8B4560;
         }
         
         .badge-customer {
-            background: linear-gradient(135deg, #ff4757 0%, #ff3742 100%);
+            background: #B8E6FF;  /* 파스텔 하늘색 */
+            color: #4A7A99;
         }
         
         .link-date {
             font-size: 11px;
-            color: #6c757d;
-            font-weight: 500;
+            color: var(--sky-gray);
+            font-weight: 400;
         }
         
         .link-url {
-            color: #0066ff;
+            color: var(--toss-blue);
             text-decoration: none;
-            font-size: 13px;
+            font-size: 16px;
             font-weight: 500;
             word-break: break-all;
-            line-height: 1.3;
-            margin-bottom: 8px;
+            line-height: 1.4;
+            margin-bottom: 16px;
             display: block;
         }
         
         .link-url:hover {
+            color: var(--sky-deep-blue);
             text-decoration: underline;
         }
         
         .link-content {
             display: grid;
             grid-template-columns: 1fr auto;
-            gap: 8px;
+            gap: 16px;
             align-items: start;
         }
         
@@ -473,30 +868,31 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            gap: 12px;
-            margin-top: 8px;
+            gap: 16px;
+            margin-top: 16px;
         }
         
         .rating-section {
             display: flex;
             align-items: center;
-            gap: 3px;
-            background: #fff3cd;
-            padding: 4px 8px;
-            border-radius: 12px;
-            border: 1px solid #ffc107;
-            font-size: 10px;
+            gap: 6px;
+            background: var(--toss-gray-100);
+            padding: 10px 14px;
+            border-radius: var(--border-radius);
+            border: 1px solid var(--border-light);
+            font-size: 14px;
         }
         
         .rating-input {
-            width: 28px;
-            padding: 2px;
+            width: 36px;
+            padding: 6px;
             border: none;
             background: transparent;
             text-align: center;
-            font-weight: 700;
-            font-size: 11px;
-            color: #856404;
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--text-primary);
+            font-family: inherit;
         }
         
         .rating-input:focus {
@@ -505,137 +901,237 @@
         
         .action-buttons {
             display: flex;
-            gap: 8px;
+            gap: 12px;
         }
         
         .btn-small {
-            width: 36px;
-            height: 36px;
-            border: 2px solid #e9ecef;
-            background: white;
+            width: 48px;
+            height: 48px;
+            border: none;
+            background: var(--bg-card);
             border-radius: 50%;
             cursor: pointer;
-            font-size: 16px;
+            font-size: 20px;
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: all 0.2s ease;
+            transition: all 0.2s var(--ease-out);
+            box-shadow: var(--shadow-md);
+            border: 1px solid var(--border-light);
+        }
+        
+        .btn-small:hover {
+            transform: scale(1.1);
+            box-shadow: var(--shadow-lg);
         }
         
         .btn-like {
-            border-color: #22c55e;
             color: #22c55e;
         }
         
-        .btn-like.active {
-            background: #22c55e;
+        .btn-like:hover, .btn-like.active {
+            background: var(--gradient-green);
             color: white;
-            transform: scale(1.1);
+            transform: scale(1.15);
+            box-shadow: var(--shadow-xl);
         }
         
         .btn-dislike {
-            border-color: #ef4444;
             color: #ef4444;
         }
         
-        .btn-dislike.active {
-            background: #ef4444;
+        .btn-dislike:hover, .btn-dislike.active {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
             color: white;
-            transform: scale(1.1);
+            transform: scale(1.15);
+            box-shadow: var(--shadow-xl);
         }
         
         .btn-delete {
-            border-color: #dc2626;
-            color: #dc2626;
-            background: #fef2f2;
+            color: var(--text-muted);
         }
         
         .btn-delete:hover {
-            background: #dc2626;
+            background: var(--text-muted);
             color: white;
-            transform: scale(1.05);
+        }
+        
+        .btn-guarantee-box {
+            width: auto;
+            height: 32px;
+            min-width: 50px;
+            padding: 6px 12px;
+            border: 2px solid #dee2e6;
+            background: #f8f9fa;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s var(--ease-out);
+            color: #6c757d;
+            letter-spacing: -0.02em;
+        }
+        
+        .btn-guarantee-box:hover {
+            background: #e9ecef;
+            color: #495057;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-sm);
+            border-color: #adb5bd;
+        }
+        
+        .btn-guarantee-box.btn-guarantee-active {
+            background: #28a745;
+            color: white;
+            border-color: #28a745;
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .btn-guarantee-box.btn-guarantee-active:hover {
+            background: #218838;
+            border-color: #1e7e34;
+            transform: translateY(-1px);
+            box-shadow: var(--shadow-md);
         }
         
         .memo-section {
             background: #f8f9fa;
-            border-radius: 8px;
-            padding: 8px;
-            margin-top: 6px;
+            border-radius: 12px;
+            padding: 16px;
+            margin-top: 16px;
+            border: none;
         }
         
         .memo-input {
             width: 100%;
-            min-height: 40px;
-            padding: 6px;
-            border: 1px solid #e9ecef;
-            border-radius: 6px;
-            font-size: 12px;
+            min-height: 60px;
+            padding: 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 8px;
+            font-size: 13px;
             resize: vertical;
             font-family: inherit;
+            color: var(--text-primary);
+            line-height: 1.5;
+            background: white;
         }
         
         .memo-input:focus {
             outline: none;
-            border-color: #0066ff;
+            border-color: var(--primary-blue);
+            box-shadow: 0 0 0 2px rgba(103, 126, 234, 0.1);
         }
         
         .memo-toggle {
-            background: #e9ecef;
+            background: #e5e7eb;
             border: none;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 10px;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 12px;
             cursor: pointer;
             margin-left: auto;
             display: block;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-family: inherit;
+            transition: var(--transition-all);
+        }
+        
+        .memo-toggle:hover {
+            background: var(--primary-blue);
+            color: white;
+            transform: translateY(-1px);
         }
         
         .no-links {
             text-align: center;
-            color: #6c757d;
-            padding: 40px 20px;
-            font-size: 14px;
+            color: var(--text-muted);
+            padding: 64px 32px;
+            font-size: 16px;
             line-height: 1.6;
+            font-weight: 500;
         }
         
-        /* 모바일 최적화 */
-        @media (max-width: 480px) {
+        /* 모바일 최적화 - Toss 스타일 📱 */
+        @media (max-width: 768px) {
             .container {
-                padding: 12px;
+                padding: var(--spacing-xl) var(--spacing-md);
             }
             
             .card {
-                padding: 16px;
-                margin-bottom: 12px;
+                padding: var(--spacing-xl) var(--spacing-lg);
+                margin-bottom: var(--spacing-lg);
+                border-radius: var(--border-radius);
+            }
+            
+            .card::after {
+                font-size: 18px;
+                top: var(--spacing-md);
+                right: var(--spacing-md);
             }
             
             .header {
-                padding: 16px 12px;
+                padding: var(--spacing-md) var(--spacing-md);
             }
             
             .logo {
-                font-size: 18px;
+                font-size: 20px;
+            }
+            
+            .logo::before {
+                font-size: 24px;
             }
             
             .customer-info {
-                font-size: 14px;
+                font-size: 15px;
                 flex-direction: column;
-                gap: 4px;
-                align-items: flex-end;
+                gap: var(--spacing-sm);
+                align-items: stretch;
+            }
+            
+            .customer-name, .date-selector {
+                padding: var(--spacing-sm) var(--spacing-md);
+                font-size: 14px;
+                text-align: center;
             }
             
             .button-row {
-                gap: 6px;
+                gap: 10px;
             }
             
             .btn-toggle {
-                min-width: 70px;
-                padding: 10px 12px;
-                font-size: 13px;
+                min-width: 80px;
+                padding: var(--spacing-sm) var(--spacing-md);
+                font-size: 17px; /* 15px → 17px로 증가 */
+            }
+            
+            .btn-primary {
+                padding: var(--spacing-md) var(--spacing-lg);
+                font-size: 17px;
+            }
+            
+            .btn-primary::before {
+                font-size: 18px;
+            }
+            
+            .form-input {
+                padding: 12px 16px;
+                font-size: 14px;
+                border-radius: 10px;
             }
             
             .filter-row {
-                gap: 6px;
+                gap: 8px;
+                flex-wrap: wrap;
+            }
+            
+            .filter-btn {
+                padding: 8px 14px; /* 패딩도 증가 */
+                font-size: 14px; /* 11px → 14px로 증가 */
+                border-radius: 18px; /* 둥근 모서리도 약간 증가 */
             }
             
             .link-header {
@@ -652,24 +1148,222 @@
                 grid-template-columns: 1fr;
                 gap: 8px;
             }
+            
+            .link-number {
+                width: 28px;
+                height: 28px;
+                font-size: 12px;
+                top: -8px;
+                left: -8px;
+            }
+            
+            .card-title {
+                font-size: 28px; /* 20px → 28px로 증가 */
+                margin-bottom: 24px;
+            }
+            
+            .filters {
+                padding: 20px 16px;
+                border-radius: 12px;
+            }
+            
+            .loan-item {
+                padding: 20px 16px;
+                border-radius: 10px;
+            }
+            
+            .brand-highlight {
+                padding: 24px 16px;
+                font-size: 14px;
+                border-radius: 12px;
+                margin-bottom: 24px;
+            }
+            
+            .btn-small {
+                width: 36px;
+                height: 36px;
+                font-size: 14px;
+            }
+            
+            .action-buttons {
+                gap: 8px;
+            }
+        }
+        
+        /* 작은 화면 추가 최적화 - 카카오프렌즈 미니 버전 📱💛 */
+        @media (max-width: 480px) {
+            .header {
+                padding: 10px 12px;
+                border-bottom-width: 2px;
+            }
+            
+            .container {
+                padding: 16px 12px;
+            }
+            
+            .card {
+                padding: 20px 16px;
+                border-radius: 20px;
+                border-width: 2px;
+            }
+            
+            .card::after {
+                font-size: 18px;
+                top: 10px;
+                right: 12px;
+            }
+            
+            .logo {
+                font-size: 22px;
+            }
+            
+            .logo::before {
+                font-size: 24px;
+            }
+            
+            .logo::after {
+                font-size: 16px;
+            }
+            
+            .customer-info {
+                font-size: 13px;
+            }
+            
+            .customer-name, .date-selector {
+                padding: 8px 14px;
+                font-size: 12px;
+                border-radius: 16px;
+            }
+            
+            .brand-highlight {
+                padding: 20px 16px;
+                font-size: 14px;
+                border-radius: 16px;
+            }
+            
+            .filters {
+                padding: 16px 12px;
+                border-radius: 16px;
+            }
+            
+            .btn-toggle {
+                min-width: 80px;
+                padding: 10px 14px;
+                font-size: 15px; /* 12px → 15px로 증가 */
+                border-radius: 16px;
+            }
+            
+            .btn-primary {
+                padding: 16px 20px;
+                font-size: 15px;
+                border-radius: 20px;
+            }
+            
+            .btn-primary::before {
+                font-size: 16px;
+                left: 14px;
+            }
+            
+            .link-item {
+                padding: 16px;
+                border-radius: 16px;
+                border-width: 2px;
+            }
+            
+            .link-item::before {
+                font-size: 18px;
+                top: 8px;
+                right: 12px;
+            }
+            
+            .link-number {
+                width: 35px;
+                height: 35px;
+                font-size: 13px;
+                top: -10px;
+                left: -10px;
+                border-width: 2px;
+            }
+        }
+        
+        /* 특별한 브랜딩 요소 */
+        .brand-highlight {
+            background: linear-gradient(135deg, rgba(248, 250, 252, 0.95) 0%, rgba(241, 245, 249, 0.9) 100%);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            padding: 32px;
+            border-radius: 16px;
+            margin-bottom: 32px;
+            text-align: center;
+            color: var(--sky-navy-solid);
+            font-weight: 600;
+            font-size: 16px;
+            letter-spacing: 0.02em;
+            position: relative;
+            box-shadow: var(--glass-shadow);
+            overflow: hidden;
+        }
+        
+        .brand-highlight::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 3px;
+            background: var(--sky-blue);
+            border-radius: 0 0 2px 2px;
+            box-shadow: 0 2px 8px rgba(74, 144, 226, 0.3);
+        }
+        
+        .brand-highlight::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 1px;
+            background: linear-gradient(90deg, transparent 0%, rgba(74, 144, 226, 0.3) 50%, transparent 100%);
+        }
+        
+        /* 스크롤바 스타일링 */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: var(--sky-light-gray);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: var(--sky-gray);
+            border-radius: 4px;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--sky-navy-solid);
         }
     </style>
 </head>
 <body>
     <div class="header">
         <div class="header-content">
-            <div class="logo">🏠 집노트</div>
+            <div class="logo">집노트</div>
             <div class="customer-info">
-                <div><span class="customer-name" id="customerName">{{ customer_name }}</span>고객님 입주 (<span class="date-selector" id="moveInDate">{{ move_in_date or '날짜 선택' }}</span>)</div>
+                <div>
+                    <span class="customer-name" id="customerName" style="cursor:pointer;">{{ customer_name }}</span>고객님 입주 (<span class="date-selector" id="moveInDate" style="cursor:pointer;">{{ move_in_date or '날짜 선택' }}</span>)
+                </div>
             </div>
         </div>
     </div>
     
     <div class="container">
         <div class="card">
-            <h2 class="card-title">💰 대출 기준정리</h2>
-            <div style="background: #e7f3ff; padding: 12px; border-radius: 8px; margin-bottom: 16px; font-size: 14px; color: #0066ff; text-align: center; font-weight: 600;">
-                더탑원부동산은 40명이상의 중개사의 권리분석을 통해 안전한것만 진행합니다 💪
+            <h2 class="card-title">대출 기준정리</h2>
+            <div class="brand-highlight">
+                더탑원부동산은 40명이상의 중개사의 권리분석을 통해 안전한것만 진행합니다
             </div>
             
             <div class="loan-section">
@@ -702,7 +1396,7 @@
                         <p>• 갱신보증의 경우 '23.12.31 신청건까지 담보인정비율 100%를 적용</p>
                         <p>• 주택가격 = 공시지가 × 140% 적용</p>
                         
-                        <h4 style="margin: 16px 0 8px 0; color: #0066ff;">세부 기준:</h4>
+                        <h4 style="margin: 16px 0 8px 0; color: var(--hermes-orange);">세부 기준:</h4>
                         <div style="margin-left: 12px;">
                             <p><strong>1.</strong> 선순위 채권(등기상 채권액) &lt; (개별주택가격 × 140% × 90%) × 60%</p>
                             <div class="loan-formula">
@@ -725,7 +1419,7 @@
         </div>
         
         <div class="card">
-            <h2 class="card-title">🔗 매물 링크 관리</h2>
+            <h2 class="card-title">매물 링크 관리</h2>
             
             <div class="add-link-form">
                 <div class="form-group">
@@ -735,7 +1429,14 @@
                 
                 <div class="form-group">
                     <label class="form-label" for="linkMemo">메모 (선택사항)</label>
-                    <textarea id="linkMemo" class="form-input" placeholder="메모를 입력하세요..." rows="2"></textarea>
+                    <textarea id="linkMemo" class="form-input" placeholder="메모를 입력하세요..." rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label class="form-label">
+                        <input type="checkbox" id="guaranteeInsurance" style="margin-right: 8px;">
+                        보증보험 가능
+                    </label>
                 </div>
                 
                 <div class="form-group">
@@ -745,7 +1446,7 @@
                         <button type="button" class="btn-toggle" data-platform="naver">네이버</button>
                         <button type="button" class="btn-toggle" data-platform="other">기타</button>
                     </div>
-                    <div class="button-row" style="margin-top: 8px;">
+                    <div class="button-row" style="margin-top: 12px;">
                         <button type="button" class="btn-toggle active" data-user="중개사">중개사</button>
                         <button type="button" class="btn-toggle" data-user="손님">손님</button>
                     </div>
@@ -774,7 +1475,14 @@
                         <button class="filter-btn" data-type="like" data-value="liked">좋아요</button>
                         <button class="filter-btn" data-type="like" data-value="disliked">싫어요</button>
                     </div>
-                    <input type="date" id="dateFilter" class="date-filter">
+                    <div class="filter-group">
+                        <button class="filter-btn active" data-type="guarantee" data-value="all">보증보험 전체</button>
+                        <button class="filter-btn" data-type="guarantee" data-value="available">보증보험 가능</button>
+                        <button class="filter-btn" data-type="guarantee" data-value="unavailable">보증보험 불가</button>
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <input type="date" id="dateFilter" class="date-filter" style="width: 180px; height: 48px; font-size: 16px; padding: 12px;">
                     <button class="search-btn" onclick="searchLinks()">검색하기</button>
                     <button class="clear-filters-btn" onclick="clearFilters()">초기화</button>
                 </div>
@@ -783,20 +1491,47 @@
             <div id="linksList">
                 <div class="no-links">
                     아직 추가된 링크가 없습니다.<br>
-                    위 양식을 통해 매물 링크를 추가해보세요! 📝
+                    위 양식을 통해 매물 링크를 추가해보세요.
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- 고객 정보 입력 모달 -->
+    <div id="customerModal" style="display:none; position:fixed; left:0; top:0; width:100vw; height:100vh; background:rgba(0,0,0,0.3); z-index:1000;">
+      <div style="background:#fff; margin:10vh auto; padding:30px; border-radius:16px; width:350px; box-shadow:0 2px 16px #888; max-width:90vw;">
+        <h3 style="margin-bottom:18px; font-size:22px;">고객 정보 입력</h3>
+        <label style="font-weight:500;">이름<br>
+          <textarea id="modalCustomerName" style="width:100%; min-height:38px; font-size:17px; border-radius:8px; border:1px solid #eee; padding:8px; margin-top:4px; resize:vertical;">{{ customer_name }}</textarea>
+        </label>
+        <br><br>
+        <label style="font-weight:500;">입주일<br>
+          <input type="text" id="modalMoveInDate" style="width:100%; font-size:17px; border-radius:8px; border:1px solid #eee; padding:8px; margin-top:4px; background:#f9f9f9;" readonly />
+        </label>
+        <br><br>
+        <button id="saveCustomerBtn" style="background:var(--toss-blue); color:white; border:none; border-radius:8px; padding:10px 24px; font-size:16px; font-weight:600; cursor:pointer;">저장</button>
+        <button type="button" onclick="document.getElementById('customerModal').style.display='none'" style="margin-left:10px; background:#eee; color:#333; border:none; border-radius:8px; padding:10px 24px; font-size:16px; font-weight:500; cursor:pointer;">취소</button>
+      </div>
+    </div>
+
+    <!-- flatpickr 달력 라이브러리 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
     <script>
         let currentPlatform = 'zigbang';
-        let currentUser = '중개사';
+        // 로그인된 직원의 employee_id를 서버에서 템플릿 변수로 전달받음
+        const employeeId = '{{ employee_id or "" }}';
+        let currentUser = employeeId || '중개사';
         let currentFilters = {
             platform: 'all',
             user: 'all',
-            like: 'all'
+            like: 'all',
+            guarantee: 'all'
         };
+        
+        // 관리 사이트 ID (Flask 템플릿에서 전달)
+        const managementSiteId = '{{ management_site_id or "" }}';
 
         // 페이지 로드 시 초기화
         document.addEventListener('DOMContentLoaded', function() {
@@ -837,65 +1572,14 @@
                 });
             });
 
-            // 고객명 변경
-            document.getElementById('customerName').addEventListener('click', function() {
-                const newName = prompt('고객명을 입력하세요:', this.textContent);
-                if (newName && newName.trim()) {
-                    updateCustomerInfo(newName.trim(), null);
-                }
-            });
-
-            // 입주일 변경
-            document.getElementById('moveInDate').addEventListener('click', function() {
-                const input = document.createElement('input');
-                input.type = 'date';
-                input.style.position = 'fixed';
-                input.style.top = '50%';
-                input.style.left = '50%';
-                input.style.transform = 'translate(-50%, -50%)';
-                input.style.zIndex = '9999';
-                input.style.fontSize = '16px';
-                input.style.padding = '10px';
-                input.style.border = '2px solid #0066ff';
-                input.style.borderRadius = '8px';
-                input.style.backgroundColor = 'white';
-                
-                // 현재 날짜가 있으면 설정
-                const currentDate = this.textContent;
-                if (currentDate && currentDate !== '날짜 선택') {
-                    input.value = currentDate;
-                }
-                
-                document.body.appendChild(input);
-                
-                // 포커스를 주어 날짜 선택기 열기
-                setTimeout(() => {
-                    input.focus();
-                    input.showPicker && input.showPicker();
-                }, 100);
-                
-                input.addEventListener('change', function() {
-                    if (this.value) {
-                        updateCustomerInfo(null, this.value);
-                    }
-                    document.body.removeChild(this);
-                });
-                
-                input.addEventListener('blur', function() {
-                    setTimeout(() => {
-                        if (document.body.contains(this)) {
-                            document.body.removeChild(this);
-                        }
-                    }, 100);
-                });
-                
-                // ESC 키로 닫기
-                input.addEventListener('keydown', function(e) {
-                    if (e.key === 'Escape') {
-                        document.body.removeChild(this);
-                    }
-                });
-            });
+            // [기존 prompt/input 방식 삭제]
+            // 고객명, 입주일 클릭 시 모달 오픈(아래 코드로 대체)
+            document.getElementById('customerName').onclick = function() {
+              openCustomerModal();
+            };
+            document.getElementById('moveInDate').onclick = function() {
+              openCustomerModal();
+            };
         }
 
         // 대출 상세정보 토글
@@ -905,11 +1589,31 @@
 
         // 고객 정보 로드
         function loadCustomerInfo() {
-            fetch('/api/customer_info')
-                .then(response => response.json())
+            const apiUrl = managementSiteId ? `/api/customer_info?management_site_id=${managementSiteId}` : '/api/customer_info';
+            
+            fetch(apiUrl)
+                .then(response => {
+                    if (response.status === 404) {
+                        alert('고객 정보를 찾을 수 없습니다. 삭제되었거나 존재하지 않는 고객입니다.');
+                        // 메인 페이지로 리다이렉트
+                        window.location.href = '/';
+                        return;
+                    }
+                    return response.json();
+                })
                 .then(data => {
-                    document.getElementById('customerName').textContent = data.customer_name;
-                    document.getElementById('moveInDate').textContent = data.move_in_date || '날짜 선택';
+                    if (data && data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    if (data) {
+                        document.getElementById('customerName').textContent = data.customer_name;
+                        document.getElementById('moveInDate').textContent = data.move_in_date || '날짜 선택';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading customer info:', error);
+                    alert('고객 정보를 불러오는 중 오류가 발생했습니다.');
                 });
         }
 
@@ -938,6 +1642,7 @@
         function addLink() {
             const url = document.getElementById('linkUrl').value;
             const memo = document.getElementById('linkMemo').value;
+            const guaranteeInsurance = document.getElementById('guaranteeInsurance').checked;
             
             if (!url) {
                 alert('링크 URL을 입력해주세요.');
@@ -948,10 +1653,14 @@
                 url: url,
                 platform: currentPlatform,
                 added_by: currentUser,
-                memo: memo
+                memo: memo,
+                guarantee_insurance: guaranteeInsurance,
+                residence_extra: ''
             };
             
-            fetch('/api/links', {
+            const apiUrl = managementSiteId ? `/api/links?management_site_id=${managementSiteId}` : '/api/links';
+            
+            fetch(apiUrl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -963,6 +1672,7 @@
                 if (result.success) {
                     document.getElementById('linkUrl').value = '';
                     document.getElementById('linkMemo').value = '';
+                    document.getElementById('guaranteeInsurance').checked = false;
                     loadLinks();
                 } else {
                     alert(result.error || '링크 추가에 실패했습니다.');
@@ -973,17 +1683,36 @@
         // 링크 목록 로드
         function loadLinks() {
             const params = new URLSearchParams();
+            if (managementSiteId) params.append('management_site_id', managementSiteId);
             if (currentFilters.platform !== 'all') params.append('platform', currentFilters.platform);
             if (currentFilters.user !== 'all') params.append('user', currentFilters.user);
             if (currentFilters.like !== 'all') params.append('like', currentFilters.like);
+            if (currentFilters.guarantee !== 'all') params.append('guarantee', currentFilters.guarantee);
             
             const dateFilter = document.getElementById('dateFilter').value;
             if (dateFilter) params.append('date', dateFilter);
 
             fetch(`/api/links?${params.toString()}`)
-                .then(response => response.json())
-                .then(links => {
-                    displayLinks(links);
+                .then(response => {
+                    if (response.status === 404) {
+                        alert('고객 정보를 찾을 수 없습니다. 페이지를 새로고침합니다.');
+                        location.reload();
+                        return;
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    if (data && data.error) {
+                        alert(data.error);
+                        return;
+                    }
+                    if (data) {
+                        displayLinks(data);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading links:', error);
+                    alert('링크 목록을 불러오는 중 오류가 발생했습니다.');
                 });
         }
 
@@ -995,7 +1724,7 @@
                 container.innerHTML = `
                     <div class="no-links">
                         아직 추가된 링크가 없습니다.<br>
-                        위 양식을 통해 매물 링크를 추가해보세요! 📝
+                        위 양식을 통해 매물 링크를 추가해보세요.
                     </div>
                 `;
                 return;
@@ -1045,6 +1774,11 @@
                                                 onclick="deleteLink(${link.id})" 
                                                 title="링크 삭제">
                                             🗑️
+                                        </button>
+                                        <button class="btn-guarantee-box ${link.guarantee_insurance ? 'btn-guarantee-active' : 'btn-guarantee'}" 
+                                                onclick="toggleGuarantee(${link.id})" 
+                                                title="보증보험 가능 여부">
+                                            보증
                                         </button>
                                     </div>
                                 </div>
@@ -1098,7 +1832,25 @@
                     liked: !isActive
                 })
             })
-            .then(() => loadLinks());
+            .then(response => {
+                if (response.status === 404) {
+                    alert('삭제된 고객의 링크입니다. 작업을 수행할 수 없습니다.');
+                    location.reload();
+                    return;
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result && result.error) {
+                    alert(result.error);
+                } else {
+                    loadLinks();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('작업 중 오류가 발생했습니다.');
+            });
         }
 
         // 싫어요 토글
@@ -1116,7 +1868,75 @@
                     disliked: !isActive
                 })
             })
-            .then(() => loadLinks());
+            .then(response => {
+                if (response.status === 404) {
+                    alert('삭제된 고객의 링크입니다. 작업을 수행할 수 없습니다.');
+                    location.reload();
+                    return;
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result && result.error) {
+                    alert(result.error);
+                } else {
+                    loadLinks();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('작업 중 오류가 발생했습니다.');
+            });
+        }
+
+        // 보증보험 토글
+        function toggleGuarantee(linkId) {
+            const btn = document.querySelector(`button[onclick="toggleGuarantee(${linkId})"]`);
+            const isActive = btn.classList.contains('btn-guarantee-active');
+
+            // 보증보험 클릭 로그 기록
+            if (typeof managementSiteId !== 'undefined' && managementSiteId) {
+                fetch('/api/guarantee-log', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        management_site_id: managementSiteId,
+                        link_id: linkId
+                    })
+                });
+            }
+            
+            fetch(`/api/links/${linkId}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    action: 'guarantee',
+                    guarantee_insurance: !isActive
+                })
+            })
+            .then(response => {
+                if (response.status === 404) {
+                    alert('삭제된 고객의 링크입니다. 작업을 수행할 수 없습니다.');
+                    location.reload();
+                    return;
+                }
+                return response.json();
+            })
+            .then(result => {
+                if (result && result.error) {
+                    alert(result.error);
+                } else {
+                    loadLinks();
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('작업 중 오류가 발생했습니다.');
+            });
         }
 
         // 메모 토글
@@ -1152,10 +1972,19 @@
                         'Content-Type': 'application/json',
                     }
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (response.status === 404) {
+                        alert('삭제된 고객의 링크입니다. 작업을 수행할 수 없습니다.');
+                        location.reload(); // 페이지 새로고침
+                        return;
+                    }
+                    return response.json();
+                })
                 .then(result => {
-                    if (result.success) {
+                    if (result && result.success) {
                         loadLinks(); // 목록 새로고침
+                    } else if (result && result.error) {
+                        alert(result.error);
                     } else {
                         alert('링크 삭제에 실패했습니다.');
                     }
@@ -1181,11 +2010,40 @@
             currentFilters = {
                 platform: 'all',
                 user: 'all',
-                like: 'all'
+                like: 'all',
+                guarantee: 'all'
             };
             
             loadLinks();
         }
+
+        // 모달 오픈: 이름 또는 날짜 클릭 시
+        function openCustomerModal() {
+          document.getElementById('modalCustomerName').value = document.getElementById('customerName').innerText;
+          document.getElementById('modalMoveInDate').value = document.getElementById('moveInDate').innerText === '날짜 선택' ? '' : document.getElementById('moveInDate').innerText;
+          document.getElementById('customerModal').style.display = 'block';
+          flatpickr("#modalMoveInDate", {dateFormat: "Y-m-d", defaultDate: document.getElementById('modalMoveInDate').value || undefined});
+        }
+        // 저장 버튼
+        document.getElementById('saveCustomerBtn').onclick = function() {
+          const name = document.getElementById('modalCustomerName').value.trim() || '제일좋은집 찾아드릴분';
+          const date = document.getElementById('modalMoveInDate').value;
+          fetch('/api/customer_info', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({customer_name: name, move_in_date: date})
+          })
+          .then(res => res.json())
+          .then(data => {
+            if(data.success) {
+              document.getElementById('customerModal').style.display = 'none';
+              document.getElementById('customerName').innerText = name;
+              document.getElementById('moveInDate').innerText = date || '날짜 선택';
+            } else {
+              alert('저장 실패: ' + (data.error || ''));
+            }
+          });
+        };
     </script>
 </body>
 </html>

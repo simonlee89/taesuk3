@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>직원 대시보드 - 집노트</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: #f8fafc;
+            color: #1a202c;
+            line-height: 1.6;
+        }
+        
+        .app-container {
+            display: flex;
+            height: 100vh;
+        }
+        
+        /* 사이드바 */
+        .sidebar {
+            width: 260px;
+            background: #ffffff;
+            border-right: 1px solid #e2e8f0;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            z-index: 1000;
+        }
+        
+        .sidebar-header {
+            padding: 24px 20px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .logo-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+        }
+        
+        .logo-text {
+            font-size: 18px;
+            font-weight: 700;
+            color: #1a202c;
+        }
+        
+        .sidebar-nav {
+            flex: 1;
+            padding: 20px 0;
+        }
+        
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 20px;
+            color: #64748b;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+            transition: all 0.2s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .nav-item:hover {
+            background: #f1f5f9;
+            color: #6366f1;
+        }
+        
+        .nav-item.active {
+            background: #f1f5f9;
+            color: #6366f1;
+            border-left-color: #6366f1;
+        }
+        
+        .nav-icon {
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        /* 메인 컨텐츠 */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .header {
+            background: #ffffff;
+            border-bottom: 1px solid #e2e8f0;
+            padding: 8px 32px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .search-box {
+            position: relative;
+        }
+        
+        .search-input {
+            width: 300px;
+            padding: 10px 16px 10px 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            background: #f8fafc;
+            font-size: 14px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+        
+        .search-input:focus {
+            border-color: #6366f1;
+            background: #ffffff;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .search-icon {
+            position: absolute;
+            left: 12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #9ca3af;
+        }
+        
+        /* 명언 컨테이너 */
+        .quote-container {
+            display: flex;
+            align-items: center;
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            width: 500px;
+            height: 92px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+        
+        .quote-iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+            border-radius: 12px;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+        
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 12px;
+            background: #f8fafc;
+        }
+        
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+            font-size: 14px;
+        }
+        
+        .user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .user-name {
+            font-size: 14px;
+            font-weight: 600;
+            color: #1a202c;
+        }
+        
+        .user-role {
+            font-size: 12px;
+            color: #64748b;
+        }
+        
+        .logout-btn {
+            padding: 8px 16px;
+            background: #ef4444;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+        
+        .logout-btn:hover {
+            background: #dc2626;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        /* 컨텐츠 영역 */
+        .content {
+            flex: 1;
+            padding: 32px;
+            overflow-y: auto;
+        }
+        
+        .page-header {
+            margin-bottom: 16px;
+        }
+        
+        .header-content {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        
+        .header-text {
+            text-align: left;
+            flex: 1;
+        }
+        
+        .page-title {
+            font-size: 20px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 4px;
+        }
+        
+        .page-subtitle {
+            font-size: 14px;
+            color: #64748b;
+        }
+        
+        .dashboard-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 16px;
+            margin-bottom: 24px;
+            width: 80%;
+        }
+        
+        .stat-card {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #e2e8f0;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+        
+        .stat-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 12px;
+        }
+        
+        .stat-title {
+            font-size: 13px;
+            font-weight: 500;
+            color: #64748b;
+        }
+        
+        .stat-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+        }
+        
+        .stat-value {
+            font-size: 24px;
+            font-weight: 700;
+            color: #1a202c;
+            margin-bottom: 6px;
+        }
+        
+        .stat-change {
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .stat-change.positive {
+            color: #059669;
+        }
+        
+        .stat-change.negative {
+            color: #dc2626;
+        }
+        
+        .card {
+            background: #ffffff;
+            border-radius: 16px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        
+        .card-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a202c;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn {
+            padding: 12px 20px;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            text-decoration: none;
+        }
+        
+        .btn-primary {
+            background: #6366f1;
+            color: white;
+        }
+        
+        .btn-primary:hover {
+            background: #5855eb;
+            transform: translateY(-1px);
+            box-shadow: 0 0 20px rgba(99, 102, 241, 0.4), 0 4px 12px rgba(99, 102, 241, 0.3);
+        }
+        
+        .btn-secondary {
+            background: #f1f5f9;
+            color: #475569;
+        }
+        
+        .btn-secondary:hover {
+            background: #e2e8f0;
+            box-shadow: 0 0 15px rgba(148, 163, 184, 0.3), 0 4px 8px rgba(148, 163, 184, 0.2);
+        }
+        
+        .btn-success {
+            background: #10b981;
+            color: white;
+        }
+        
+        .btn-success:hover {
+            background: #059669;
+            box-shadow: 0 0 20px rgba(16, 185, 129, 0.4), 0 4px 12px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-danger {
+            background: #ef4444;
+            color: white;
+        }
+        
+        .btn-danger:hover {
+            background: #dc2626;
+            box-shadow: 0 0 20px rgba(239, 68, 68, 0.4), 0 4px 12px rgba(239, 68, 68, 0.3);
+        }
+        
+        .btn-sm {
+            padding: 8px 12px;
+            font-size: 12px;
+        }
+        
+        .form-group {
+            margin-bottom: 20px;
+        }
+        
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            margin-bottom: 6px;
+        }
+        
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            padding: 12px 16px;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            font-size: 14px;
+            background: #ffffff;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        
+        .customers-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        
+        .customers-table th {
+            background: #f8fafc;
+            padding: 16px;
+            text-align: left;
+            font-weight: 600;
+            font-size: 14px;
+            color: #374151;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        
+        .customers-table td {
+            padding: 16px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+        }
+        
+        .customers-table tr:hover {
+            background: #f8fafc;
+        }
+        
+        .status-badge {
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .status-progress {
+            background: #fef3c7;
+            color: #92400e;
+        }
+        
+        .status-completed, .status-complete {
+            background: #dcfce7;
+            color: #166534;
+        }
+        
+        .status-cancelled, .status-hold {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+        
+        .management-link {
+            color: #6366f1;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 13px;
+        }
+        
+        .management-link:hover {
+            color: #5855eb;
+            text-decoration: underline;
+        }
+        
+        .property-link-placeholder {
+            color: #94a3b8;
+            font-style: italic;
+            font-size: 12px;
+        }
+        
+        .editable-cell {
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .editable-cell:hover {
+            background-color: #f8fafc;
+            transform: scale(1.02);
+        }
+        
+        .editing-cell {
+            padding: 2px !important;
+            background-color: #ffffff;
+            transform: scale(1.05);
+            box-shadow: 0 0 0 2px #6366f1, 0 4px 12px rgba(99, 102, 241, 0.15);
+            border-radius: 6px;
+            transition: all 0.3s ease;
+        }
+        
+        .editing-cell input, .editing-cell select {
+            width: 100%;
+            border: none;
+            padding: 8px;
+            font-size: 14px;
+            background: transparent;
+            border-radius: 4px;
+            outline: none;
+        }
+        
+        .memo-cell {
+            cursor: pointer;
+            max-width: 150px;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+        
+        .memo-cell:hover {
+            background-color: #f8fafc;
+        }
+        
+        /* 필터 섹션 */
+        .filter-section {
+            padding: 16px 0;
+            border-bottom: 1px solid #e2e8f0;
+            margin-bottom: 20px;
+            display: flex;
+            gap: 32px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        
+        .filter-label {
+            font-size: 14px;
+            font-weight: 500;
+            color: #374151;
+            white-space: nowrap;
+        }
+        
+        .filter-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .filter-btn {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            background: #ffffff;
+            border-radius: 8px;
+            font-size: 13px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            color: #64748b;
+        }
+        
+        .filter-btn:hover {
+            border-color: #6366f1;
+            color: #6366f1;
+            background: #f8fafc;
+        }
+        
+        .filter-btn.active {
+            background: #6366f1;
+            color: white;
+            border-color: #6366f1;
+        }
+        
+        .filter-select {
+            padding: 6px 12px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+            font-size: 13px;
+            background: #ffffff;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+        
+        .filter-select:focus {
+            outline: none;
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        /* 메모 모달 */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .modal-content {
+            background: #ffffff;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+            transform: scale(0.9);
+            transition: transform 0.3s ease;
+        }
+        
+        .modal-overlay.active .modal-content {
+            transform: scale(1);
+        }
+        
+        .modal-header {
+            padding: 20px 24px;
+            border-bottom: 1px solid #e2e8f0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #1a202c;
+            margin: 0;
+        }
+        
+        .modal-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #64748b;
+            padding: 4px;
+            border-radius: 6px;
+            transition: all 0.2s ease;
+        }
+        
+        .modal-close:hover {
+            background: #f1f5f9;
+            color: #374151;
+        }
+        
+        .modal-body {
+            padding: 24px;
+        }
+        
+        .memo-textarea {
+            width: 100%;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 12px 16px;
+            font-size: 14px;
+            font-family: inherit;
+            resize: vertical;
+            min-height: 120px;
+            transition: all 0.2s ease;
+            outline: none;
+        }
+        
+        .memo-textarea:focus {
+            border-color: #6366f1;
+            box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+        }
+        
+        .modal-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #e2e8f0;
+            display: flex;
+            gap: 12px;
+            justify-content: flex-end;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+        }
+        
+        .alert {
+            padding: 16px;
+            border-radius: 12px;
+            margin-bottom: 24px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .alert-success {
+            background: #dcfce7;
+            color: #166534;
+            border: 1px solid #bbf7d0;
+        }
+        
+        .alert-error {
+            background: #fee2e2;
+            color: #991b1b;
+            border: 1px solid #fecaca;
+        }
+        
+        .loading {
+            position: relative;
+            color: transparent;
+        }
+        
+        .loading::after {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 16px;
+            height: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 50%;
+            border-top-color: #ffffff;
+            animation: spin 1s ease-in-out infinite;
+            transform: translate(-50%, -50%);
+        }
+        
+        @keyframes spin {
+            to { transform: translate(-50%, -50%) rotate(360deg); }
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: #64748b;
+        }
+        
+        .empty-state-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        
+        .empty-state-title {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 8px;
+            color: #374151;
+        }
+        
+        .empty-state-description {
+            font-size: 14px;
+            margin-bottom: 24px;
+        }
+        
+        /* 카드형 보증보험 UI 스타일 추가 */
+        .guarantee-card {
+            background: #fff;
+            border-radius: 16px;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.08);
+            border: 1px solid #e5e7eb;
+            margin-bottom: 20px;
+            padding: 20px 24px 16px 24px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            transition: box-shadow 0.2s;
+        }
+        .guarantee-card:hover {
+            box-shadow: 0 4px 16px rgba(99,102,241,0.18);
+        }
+        .guarantee-card-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        .guarantee-badge.platform {
+            background: #f1f5f9;
+            color: #6366f1;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 4px 14px;
+            font-size: 14px;
+        }
+        .guarantee-date {
+            color: #64748b;
+            font-size: 13px;
+        }
+        .guarantee-url {
+            color: #2563eb;
+            font-size: 16px;
+            text-decoration: underline;
+            word-break: break-all;
+            flex: 1;
+        }
+        .guarantee-btn-row {
+            justify-content: flex-end;
+        }
+        .guarantee-badge.guarantee {
+            background: #6366f1;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 6px 18px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(99,102,241,0.10);
+        }
+        /* 보증보험 테이블 스타일(고객목록 표와 통일) */
+        .guarantee-table th, .guarantee-table td {
+            padding: 12px 16px;
+            text-align: center;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 15px;
+        }
+        .guarantee-table th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 600;
+        }
+        .platform-badge {
+            background: #f1f5f9;
+            color: #6366f1;
+            font-weight: 600;
+            border-radius: 8px;
+            padding: 4px 14px;
+            font-size: 14px;
+        }
+        .guarantee-badge-table {
+            background: #facc15;
+            color: #fff;
+            font-weight: 700;
+            border-radius: 8px;
+            padding: 6px 18px;
+            font-size: 15px;
+            letter-spacing: 1px;
+            box-shadow: 0 2px 8px rgba(250,204,21,0.10);
+            display: inline-block;
+        }
+        .guarantee-url {
+            color: #2563eb;
+            text-decoration: underline;
+            word-break: break-all;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- 사이드바 -->
+        <div class="sidebar">
+            <div class="sidebar-header">
+                <div class="logo">
+                    <div class="logo-icon">🏠</div>
+                    <div class="logo-text">집노트</div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/dashboard" class="nav-item">
+                    <div class="nav-icon">📊</div>
+                    대시보드
+                </a>
+                <a href="#" class="nav-item active" id="guarantee-log-menu">
+                    <div class="nav-icon">🛡️</div>
+                    보증보험
+                </a>
+                <a href="/logout" class="nav-item">
+                    <div class="nav-icon">🚪</div>
+                    로그아웃
+                </a>
+            </nav>
+        </div>
+        
+        <!-- 메인 컨텐츠 -->
+        <div class="main-content">
+            <!-- 헤더 -->
+            <div class="header">
+                <div class="header-left">
+                    <div class="search-box">
+                        <div class="search-icon">🔍</div>
+                        <input type="text" class="search-input" placeholder="고객 검색..." id="search-input">
+                    </div>
+                </div>
+                
+                <div class="header-right">
+                    <div class="user-profile">
+                        <div class="user-avatar" id="user-avatar" {% if employee_name == '관리자' %}style="background: linear-gradient(135deg, #ef4444, #dc2626);"{% endif %}>{{ employee_name[0] if employee_name else '직' }}</div>
+                        <div class="user-info">
+                            <div class="user-name" id="user-name">{{ employee_name or '직원' }}</div>
+                            <div class="user-role">{% if employee_name == '관리자' %}관리자 모드{% else %}직원{% endif %}</div>
+                        </div>
+                    </div>
+                    {% if employee_name == '관리자' %}
+                    <a href="/admin" class="btn btn-secondary btn-sm" style="margin-right: 8px;">
+                        <span>⚙️</span> 직원관리
+                    </a>
+                    {% endif %}
+                    <a href="/logout" class="logout-btn">로그아웃</a>
+                </div>
+            </div>
+            
+            <!-- 컨텐츠 -->
+            <div class="content">
+                <div class="page-header">
+                    <div class="header-content">
+                        <div class="header-text">
+                            <h1 class="page-title">대시보드</h1>
+                            <p class="page-subtitle">고객 관리 및 현황 조회</p>
+                        </div>
+                        <!-- 명언 위젯 -->
+                        <div class="quote-container">
+                            <iframe src="https://korean-quotes.vercel.app/" 
+                                    class="quote-iframe"
+                                    frameborder="0"
+                                    scrolling="no">
+                            </iframe>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 보증보험 매물 리스트 (초기에는 숨김) -->
+                <div class="card" id="guarantee-log-section" style="display:none;">
+                    <div class="card-header">
+                        <h2 class="card-title"><span>🛡️</span> 보증보험</h2>
+                    </div>
+                    <div id="guarantee-link-list">
+                        <!-- 보증보험 매물 리스트가 여기에 렌더링됩니다 -->
+                    </div>
+                </div>
+                
+                <!-- 통계 카드 -->
+                <div class="dashboard-stats">
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3 class="stat-title">총고객</h3>
+                            <div class="stat-icon" style="background: #eef2ff; color: #6366f1;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 16 16">
+                                    <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>
+                                    <path fill-rule="evenodd" d="M5.216 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.216zM4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="total-customers" class="stat-value">0</div>
+                        <div class="stat-change">이번 달</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3 class="stat-title">진행중</h3>
+                            <div class="stat-icon" style="background: #fefce8; color: #ca8a04;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-person-walking" viewBox="0 0 16 16">
+                                    <path d="M9.5 1.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0zM6.44 3.752A.75.75 0 0 1 7 3.5h1.445c.742 0 1.32.643 1.243 1.38l-.43 4.083a1.8 1.8 0 0 1-.088.395l-.318.906.213.242a.8.8 0 0 1 .114.175l2 4.25a.75.75 0 1 1-1.357.638l-1.956-4.154-1.68-1.921a.75.75 0 0 1-.22-.333l-.224-.668-1.53 3.25a.75.75 0 1 1-1.357-.638l1.5-3.187.17-.36a.75.75 0 0 1 .42-.465l1.45-.62-1.03-3.165a.75.75 0 0 1 .184-.817z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="progress-customers" class="stat-value">0</div>
+                        <div class="stat-change">이번 달</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3 class="stat-title">계약</h3>
+                            <div class="stat-icon" style="background: #dcfce7; color: #16a34a;">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-check-circle-fill" viewBox="0 0 16 16">
+                                    <path d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z"/>
+                                </svg>
+                            </div>
+                        </div>
+                        <div id="completed-customers" class="stat-value">0</div>
+                        <div class="stat-change">이번 달</div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-header">
+                            <h3 class="stat-title">이번 주 신규</h3>
+                            <div class="stat-icon" style="background: #fce7f3; color: #ec4899;">📈</div>
+                        </div>
+                        <div id="new-customers" class="stat-value">0</div>
+                        <div class="stat-change">이번 달</div>
+                    </div>
+                </div>
+                
+                <div id="alert-container"></div>
+                
+
+                
+                <!-- 고객 목록 카드 -->
+                <div class="card">
+                    <div class="card-header">
+                        <h2 class="card-title">
+                            <span>👥</span>
+                            고객 목록
+                        </h2>
+                        <button class="btn btn-primary" onclick="addNewRow()">
+                            <span>➕</span>
+                            고객추가
+                        </button>
+                    </div>
+                    
+                    <!-- 필터 섹션 -->
+                    <div class="filter-section">
+                        <div class="filter-group">
+                            <label class="filter-label">상태별 필터:</label>
+                            <div class="filter-buttons">
+                                <button class="filter-btn active" data-filter="all" onclick="filterCustomers('all')">전체</button>
+                                <button class="filter-btn" data-filter="진행중" onclick="filterCustomers('진행중')">진행중</button>
+                                <button class="filter-btn" data-filter="완료" onclick="filterCustomers('완료')">완료</button>
+                                <button class="filter-btn" data-filter="계약" onclick="filterCustomers('계약')">계약</button>
+                                <button class="filter-btn" data-filter="보류" onclick="filterCustomers('보류')">보류</button>
+                            </div>
+                        </div>
+                        
+                        <div class="filter-group">
+                            <label class="filter-label">날짜 필터:</label>
+                            <select class="filter-select" id="date-filter" onchange="filterByDate(this.value)">
+                                <option value="all">전체 기간</option>
+                                <option value="today">오늘</option>
+                                <option value="week">이번 주</option>
+                                <option value="month">이번 달</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="table-container">
+                        <table class="customers-table">
+                            <thead>
+                                <tr>
+                                    <th>날짜</th>
+                                    <th>입주</th>
+                                    <th>고객</th>
+                                    <th>고객번호</th>
+                                    <th>금액</th>
+                                    <th>룸수</th>
+                                    <th>위치</th>
+                                    <th>대출여부</th>
+                                    <th>주차</th>
+                                    <th>애완</th>
+                                    <th>메모</th>
+                                    <th>진행여부</th>
+                                    <th>주거사이트</th>
+                            <th>업무사이트</th>
+                                    <th>작업</th>
+                                </tr>
+                            </thead>
+                            <tbody id="customers-list">
+                                <!-- 고객 목록이 여기에 동적으로 추가됩니다 -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 메모 모달 -->
+    <div id="memo-modal" class="modal-overlay" onclick="closeMemoModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 class="modal-title">📝 메모 편집</h3>
+                <button class="modal-close" onclick="closeMemoModal()">×</button>
+            </div>
+            <div class="modal-body">
+                <textarea id="memo-textarea" class="memo-textarea" placeholder="메모를 입력하세요..." rows="6"></textarea>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" onclick="closeMemoModal()">취소</button>
+                <button class="btn btn-primary" onclick="saveMemo()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let customers = [];
+        let filteredCustomers = [];
+        let currentMemoCustomerId = null;
+        // 좋아요 알림 스타일 동적 추가 (중복 방지)
+        if (!document.getElementById('like-alarm-style')) {
+            const style = document.createElement('style');
+            style.id = 'like-alarm-style';
+            style.innerHTML = `.like-alarm { color: #ff9800; font-size: 13px; margin-left: 4px; font-weight: bold; vertical-align: middle; }`;
+            document.head.appendChild(style);
+        }
+        
+        // 페이지 로드 시 실행
+        document.addEventListener('DOMContentLoaded', function() {
+            loadCustomers();
+            updateStats();
+
+            const navItems = document.querySelectorAll('.nav-item');
+            // 페이지 로드 시 URL에 따라 active 자동 적용
+            navItems.forEach(item => {
+                item.classList.remove('active');
+                if (item.getAttribute('href') === location.pathname) {
+                    item.classList.add('active');
+                }
+            });
+            // 클릭 시 active 토글
+            navItems.forEach(item => {
+                item.addEventListener('click', function(e) {
+                    navItems.forEach(i => i.classList.remove('active'));
+                    item.classList.add('active');
+                });
+            });
+
+            // 보증보험 메뉴 클릭 시 섹션 표시 및 리스트 불러오기
+            const menu = document.getElementById('guarantee-log-menu');
+            const dashboardMenu = document.querySelector('.nav-item[href="/dashboard"]');
+            const section = document.getElementById('guarantee-log-section');
+            const mainContent = document.querySelector('.content');
+            const statsBox = document.querySelector('.dashboard-stats');
+            if (menu && section && mainContent) {
+                menu.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    mainContent.querySelectorAll('.card').forEach(card => card.style.display = 'none');
+                    section.style.display = 'block';
+                    loadGuaranteeLogs();
+                    if (statsBox) statsBox.style.display = 'none';
+                });
+            }
+            if (dashboardMenu && mainContent && statsBox) {
+                dashboardMenu.addEventListener('click', function(e) {
+                    statsBox.style.display = '';
+                });
+            }
+        });
+        
+        // 고객 목록 불러오기
+        async function loadCustomers() {
+            try {
+                const response = await fetch('/api/customers');
+                customers = await response.json();
+                filteredCustomers = [...customers];
+                
+                displayCustomers(customers);
+                updateStats();
+                
+                // 필터 초기화
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.querySelector('[data-filter="all"]').classList.add('active');
+                document.getElementById('date-filter').value = 'all';
+            } catch (error) {
+                showAlert('고객 목록을 불러오는데 실패했습니다.', 'error');
+            }
+        }
+        
+        // 고객 목록 표시
+        function displayCustomers(customerList) {
+            const tbody = document.getElementById('customers-list');
+            
+            if (customerList.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="14">
+                            <div class="empty-state">
+                                <div class="empty-state-icon">👥</div>
+                                <div class="empty-state-title">등록된 고객이 없습니다</div>
+                                <div class="empty-state-description">새 고객을 추가해보세요</div>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+            
+            tbody.innerHTML = customerList.map(customer => {
+                const statusClass = customer.progress_status === '계약' ? 'status-complete' : 
+                                   customer.progress_status === '보류' ? 'status-hold' : 'status-progress';
+                const memoText = customer.memo || '-';
+                const memoDisplay = memoText.length > 10 ? memoText.substring(0, 10) + '...' : memoText;
+                // 미확인 좋아요 알림 텍스트
+                const jugAlarm = customer.unchecked_likes_jug > 0 ? `<span class='like-alarm'>🔔 좋아요 ${customer.unchecked_likes_jug}건</span>` : '';
+                const workAlarm = customer.unchecked_likes_work > 0 ? `<span class='like-alarm' style="background:#fffbe6; color:#ff9800; border-radius:8px; padding:2px 8px; margin-left:6px; font-weight:600; font-size:13px; display:inline-block;">🔔 좋아요 ${customer.unchecked_likes_work}건</span>` : '';
+                return `
+                    <tr data-customer-id="${customer.id}">
+                        <td class="editable-cell" data-field="inquiry_date" data-type="date" onclick="editCell(this)">${customer.inquiry_date || '-'}</td>
+                        <td class="editable-cell" data-field="move_in_date" data-type="date" onclick="editCell(this)">${customer.move_in_date || '-'}</td>
+                        <td class="editable-cell" data-field="customer_name" data-type="text" onclick="editCell(this)"><strong>${customer.customer_name || '-'}</strong>${customer.employee_id && '{{ employee_name }}' === '관리자' ? `<br><small style="color: #6366f1;">(${customer.employee_id})</small>` : ''}</td>
+                        <td class="editable-cell" data-field="phone" data-type="tel" onclick="editCell(this)">${customer.phone || '-'}</td>
+                        <td class="editable-cell" data-field="amount" data-type="text" onclick="editCell(this)">${customer.amount || '-'}</td>
+                        <td class="editable-cell" data-field="room_count" data-type="text" onclick="editCell(this)">${customer.room_count || '-'}</td>
+                        <td class="editable-cell" data-field="location" data-type="text" onclick="editCell(this)">${customer.location || '-'}</td>
+                        <td class="editable-cell" data-field="loan_info" data-type="text" onclick="editCell(this)">${customer.loan_info || '-'}</td>
+                        <td class="editable-cell" data-field="parking" data-type="text" onclick="editCell(this)">${customer.parking || '-'}</td>
+                        <td class="editable-cell" data-field="pets" data-type="text" onclick="editCell(this)">${customer.pets || '-'}</td>
+                        <td class="memo-cell" onclick="openMemoModal(${customer.id}, '${(customer.memo || '').replace(/'/g, "\\'")}')" title="${customer.memo || ''}">${memoDisplay}</td>
+                        <td class="editable-cell" data-field="progress_status" data-type="select" onclick="editCell(this)">
+                            <span class="status-badge ${statusClass}">
+                                ${customer.progress_status || '진행중'}
+                            </span>
+                        </td>
+                        <td>
+                            ${customer.management_site_id ? 
+                                `<a href="http://localhost:5000/customer/${customer.management_site_id}" target="_blank" class="management-link">주거사이트</a> ${jugAlarm}` : 
+                                '<span class="property-link-placeholder">주거사이트 없음</span>'
+                            }
+                        </td>
+                        <td>
+                            ${customer.management_site_id ? 
+                                `<a href="http://localhost:5001/customer/${customer.management_site_id}" target="_blank" class="management-link">업무사이트</a> ${workAlarm}` : 
+                                '<span class="property-link-placeholder">업무사이트 없음</span>'
+                            }
+                        </td>
+                        <td>
+                            <div class="action-buttons">
+                                <button class="btn btn-danger btn-sm" onclick="deleteCustomer(${customer.id})">삭제</button>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+        
+
+        
+        // 통계 업데이트
+        function updateStats() {
+            const now = new Date();
+            const startOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+
+            const customersThisMonth = customers.filter(c => {
+                if (!c.inquiry_date) return false;
+                const inquiryDate = new Date(c.inquiry_date);
+                return inquiryDate >= startOfMonth;
+            });
+
+            const totalThisMonth = customersThisMonth.length;
+            const progressThisMonth = customersThisMonth.filter(c => c.progress_status === '진행중').length;
+            const contractThisMonth = customersThisMonth.filter(c => c.progress_status === '계약').length;
+            
+            // 이번 주 신규 고객 계산
+            const oneWeekAgo = new Date();
+            oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+            const newThisWeek = customers.filter(c => {
+                if (!c.inquiry_date) return false;
+                const inquiryDate = new Date(c.inquiry_date);
+                return inquiryDate >= oneWeekAgo;
+            }).length;
+            
+            document.getElementById('total-customers').textContent = totalThisMonth;
+            document.getElementById('progress-customers').textContent = progressThisMonth;
+            document.getElementById('completed-customers').textContent = contractThisMonth;
+            document.getElementById('new-customers').textContent = newThisWeek;
+        }
+        
+        // 새 행 추가
+        function addNewRow() {
+            const tbody = document.getElementById('customers-list');
+            // 오늘 날짜 구하기 (한국시간 기준)
+            const now = new Date();
+            now.setHours(now.getHours() + 9);
+            const today = now.toISOString().slice(0, 10);
+
+            const newRow = document.createElement('tr');
+            newRow.className = 'new-row';
+            newRow.innerHTML = `
+                <td class="editable-cell" data-field="inquiry_date" data-type="date" onclick="editCell(this)">${today}</td>
+                <td class="editable-cell" data-field="move_in_date" data-type="date" onclick="editCell(this)">-</td>
+                <td class="editable-cell" data-field="customer_name" data-type="text" onclick="editCell(this)"><strong>새 고객</strong></td>
+                <td class="editable-cell" data-field="phone" data-type="tel" onclick="editCell(this)">-</td>
+                <td class="editable-cell" data-field="amount" data-type="text" onclick="editCell(this)">-</td>
+                <td class="editable-cell" data-field="room_count" data-type="text" onclick="editCell(this)">-</td>
+                <td class="editable-cell" data-field="location" data-type="text" onclick="editCell(this)">-</td>
+                <td class="editable-cell" data-field="loan_info" data-type="text" onclick="editCell(this)">-</td>
+                <td class="editable-cell" data-field="parking" data-type="text" onclick="editCell(this)">-</td>
+                <td class="editable-cell" data-field="pets" data-type="text" onclick="editCell(this)">-</td>
+                <td class="memo-cell" onclick="editMemo(this)">-</td>
+                <td class="editable-cell" data-field="progress_status" data-type="select" onclick="editCell(this)">
+                    <span class="status-badge status-progress">진행중</span>
+                </td>
+                <td><span class="property-link-placeholder">주거사이트 생성 중...</span></td>
+                <td><span class="property-link-placeholder">업무사이트 생성 중...</span></td>
+                <td>
+                    <div class="action-buttons">
+                        <button class="btn btn-primary btn-sm" onclick="saveNewCustomer(this)">저장</button>
+                        <button class="btn btn-secondary btn-sm" onclick="cancelNewRow(this)">취소</button>
+                    </div>
+                </td>
+            `;
+            tbody.insertBefore(newRow, tbody.firstChild);
+        }
+        
+        // 새 고객 저장
+        async function saveNewCustomer(button) {
+            const row = button.closest('tr');
+            const cells = row.querySelectorAll('.editable-cell, .memo-cell');
+            
+            const customerData = {};
+            cells.forEach(cell => {
+                const field = cell.dataset.field;
+                if (field) {
+                    let value = cell.textContent.trim();
+                    if (value === '-' || value === '새 고객') value = '';
+                    customerData[field] = value;
+                }
+            });
+            
+            // 메모 처리
+            const memoCell = row.querySelector('.memo-cell');
+            customerData.memo = memoCell.textContent.trim() === '-' ? '' : memoCell.textContent.trim();
+            
+            try {
+                const response = await fetch('/api/customers', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(customerData)
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('고객이 성공적으로 추가되었습니다.', 'success');
+                    
+                                                                    // 주거사이트와 업무사이트 링크 업데이트
+                        if (result.management_site_id) {
+                            const propertyLinkCell = row.querySelector('td:nth-last-child(3)');
+                            const businessLinkCell = row.querySelector('td:nth-last-child(2)');
+                            const propertyUrl = `http://localhost:5000/customer/${result.management_site_id}`;
+                            const businessUrl = `http://localhost:5001/customer/${result.management_site_id}`;
+                            propertyLinkCell.innerHTML = `<a href="${propertyUrl}" target="_blank" class="management-link">주거사이트</a>`;
+                            businessLinkCell.innerHTML = `<a href="${businessUrl}" target="_blank" class="management-link">업무사이트</a>`;
+                        }
+                    
+                    loadCustomers();
+                } else {
+                    showAlert(result.message || '고객 추가에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // 새 행 취소
+        function cancelNewRow(button) {
+            const row = button.closest('tr');
+            row.remove();
+        }
+        
+        // 셀 편집
+        function editCell(cell) {
+            // 이미 편집 중이어도 강제로 편집 진입 (클래스 제거)
+            if (cell.classList.contains('editing-cell')) {
+                cell.classList.remove('editing-cell');
+                cell.innerHTML = cell.textContent; // 기존 내용 복원
+            }
+            
+            const field = cell.dataset.field;
+            const type = cell.dataset.type;
+            const currentValue = cell.textContent.trim();
+            
+            cell.classList.add('editing-cell');
+            
+            let inputElement;
+            if (type === 'select' && field === 'progress_status') {
+                inputElement = document.createElement('select');
+                inputElement.innerHTML = `
+                    <option value="진행중">진행중</option>
+                    <option value="완료">완료</option>
+                    <option value="계약">계약</option>
+                    <option value="보류">보류</option>
+                `;
+                inputElement.value = currentValue;
+            } else {
+                inputElement = document.createElement('input');
+                inputElement.type = type;
+                inputElement.value = currentValue === '-' ? '' : currentValue;
+                // 날짜 필드이고 값이 비어있으면 오늘 날짜로 자동 입력
+                if (type === 'date' && !inputElement.value) {
+                    const now = new Date();
+                    now.setHours(now.getHours() + 9);
+                    inputElement.value = now.toISOString().slice(0, 10);
+                }
+            }
+            
+            cell.innerHTML = '';
+            cell.appendChild(inputElement);
+            inputElement.focus();
+            
+            // 엔터키 또는 포커스 아웃 시 저장
+            const saveCell = (moveNext = false) => {
+                const newValue = inputElement.value.trim();
+                const customerId = cell.closest('tr').dataset.customerId;
+                
+                if (customerId) {
+                    // 기존 행: 저장 후 옆 셀로 이동 콜백 전달
+                    updateCustomerField(customerId, field, newValue, cell, moveNext);
+                } else {
+                    // 새 행의 경우 바로 텍스트 업데이트
+                    cell.classList.remove('editing-cell');
+                    if (field === 'progress_status') {
+                        const statusClass = newValue === '계약' ? 'status-complete' : 
+                                           newValue === '보류' ? 'status-hold' : 'status-progress';
+                        cell.innerHTML = `<span class=\"status-badge ${statusClass}\">${newValue}</span>`;
+                    } else {
+                        cell.textContent = newValue || '-';
+                    }
+                    // 엔터로 저장 후 옆 셀로 이동
+                    if (moveNext) {
+                        const editableCells = Array.from(cell.parentElement.querySelectorAll('.editable-cell, .memo-cell'));
+                        const idx = editableCells.indexOf(cell);
+                        if (idx !== -1 && idx < editableCells.length - 1) {
+                            setTimeout(() => editCell(editableCells[idx + 1]), 50);
+                        }
+                    }
+                }
+            };
+            
+            inputElement.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter') {
+                    e.preventDefault();
+                    saveCell(true); // 옆 셀로 이동
+                } else if (e.key === 'Escape') {
+                    e.preventDefault();
+                    cancelCellEdit(cell, currentValue);
+                }
+            });
+            
+            inputElement.addEventListener('blur', () => saveCell(false));
+        }
+        
+        // 셀 편집 취소
+        function cancelCellEdit(cell, originalValue) {
+            cell.classList.remove('editing-cell');
+            
+            if (cell.dataset.field === 'progress_status') {
+                const statusClass = originalValue === '계약' ? 'status-complete' : 
+                                   originalValue === '보류' ? 'status-hold' : 'status-progress';
+                cell.innerHTML = `<span class="status-badge ${statusClass}">${originalValue}</span>`;
+            } else {
+                cell.textContent = originalValue;
+            }
+        }
+        
+        // 고객 필드 업데이트
+        async function updateCustomerField(customerId, field, value, cell, moveNext = false) {
+            try {
+                const response = await fetch(`/api/customers/${customerId}/field`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ [field]: value })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    cell.classList.remove('editing-cell');
+                    
+                    // 셀 내용 업데이트
+                    if (field === 'progress_status') {
+                        const statusClass = value === '계약' ? 'status-complete' : 
+                                           value === '보류' ? 'status-hold' : 'status-progress';
+                        cell.innerHTML = `<span class=\"status-badge ${statusClass}\">${value}</span>`;
+                    } else {
+                        cell.textContent = value || '-';
+                    }
+                    // 저장 후 옆 셀로 이동
+                    if (moveNext) {
+                        const editableCells = Array.from(cell.parentElement.querySelectorAll('.editable-cell, .memo-cell'));
+                        const idx = editableCells.indexOf(cell);
+                        if (idx !== -1 && idx < editableCells.length - 1) {
+                            setTimeout(() => editCell(editableCells[idx + 1]), 50);
+                        }
+                    }
+                } else {
+                    showAlert('수정 실패: ' + (result.error || '알 수 없는 오류'), 'error');
+                    cancelCellEdit(cell, cell.textContent);
+                }
+            } catch (error) {
+                showAlert('수정 중 오류가 발생했습니다.', 'error');
+                cancelCellEdit(cell, cell.textContent);
+            }
+        }
+        
+        // 메모 편집 (새 행용)
+        function editMemo(cell) {
+            const currentValue = cell.textContent.trim();
+            const newValue = prompt('메모를 입력하세요:', currentValue === '-' ? '' : currentValue);
+            if (newValue !== null) {
+                cell.textContent = newValue.trim() || '-';
+            }
+        }
+        
+        // 메모 모달 (기존 고객용)
+        function openMemoModal(customerId, currentMemo) {
+            currentMemoCustomerId = customerId;
+            const modal = document.getElementById('memo-modal');
+            const textarea = document.getElementById('memo-textarea');
+            
+            textarea.value = currentMemo || '';
+            modal.classList.add('active');
+            
+            // 포커스 설정
+            setTimeout(() => {
+                textarea.focus();
+                textarea.setSelectionRange(textarea.value.length, textarea.value.length);
+            }, 300);
+        }
+        
+        // 메모 모달 닫기
+        function closeMemoModal() {
+            const modal = document.getElementById('memo-modal');
+            modal.classList.remove('active');
+            currentMemoCustomerId = null;
+        }
+        
+        // 메모 저장
+        function saveMemo() {
+            const textarea = document.getElementById('memo-textarea');
+            const memo = textarea.value.trim();
+            
+            if (currentMemoCustomerId) {
+                updateCustomerMemo(currentMemoCustomerId, memo);
+            }
+            
+            closeMemoModal();
+        }
+        
+        // ESC 키로 모달 닫기
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeMemoModal();
+            }
+        });
+        
+        // 고객 메모 업데이트
+        async function updateCustomerMemo(customerId, memo) {
+            try {
+                const response = await fetch(`/api/customers/${customerId}/memo`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ memo: memo })
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    loadCustomers();
+                } else {
+                    showAlert('메모 수정에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // 고객 삭제
+        async function deleteCustomer(customerId) {
+            if (!confirm('이 고객을 삭제하시겠습니까?')) return;
+            
+            try {
+                const response = await fetch(`/api/customers/${customerId}`, {
+                    method: 'DELETE'
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    showAlert('고객이 성공적으로 삭제되었습니다.', 'success');
+                    loadCustomers();
+                } else {
+                    showAlert(result.message || '고객 삭제에 실패했습니다.', 'error');
+                }
+            } catch (error) {
+                showAlert('서버 오류가 발생했습니다.', 'error');
+            }
+        }
+        
+        // 필터 기능
+        function filterCustomers(status) {
+            // 활성 버튼 업데이트
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.classList.remove('active');
+            });
+            document.querySelector(`[data-filter="${status}"]`).classList.add('active');
+            
+            // 필터링
+            if (status === 'all') {
+                filteredCustomers = [...customers];
+            } else {
+                filteredCustomers = customers.filter(customer => 
+                    customer.progress_status === status
+                );
+            }
+            
+            displayCustomers(filteredCustomers);
+        }
+        
+        // 날짜별 필터
+        function filterByDate(period) {
+            const now = new Date();
+            let startDate;
+            
+            switch(period) {
+                case 'today':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+                    break;
+                case 'week':
+                    startDate = new Date(now.getTime() - 7 * 24 * 60 * 60 * 1000);
+                    break;
+                case 'month':
+                    startDate = new Date(now.getFullYear(), now.getMonth(), 1);
+                    break;
+                default:
+                    filteredCustomers = [...customers];
+                    displayCustomers(filteredCustomers);
+                    return;
+            }
+            
+            filteredCustomers = customers.filter(customer => {
+                if (!customer.inquiry_date) return false;
+                const inquiryDate = new Date(customer.inquiry_date);
+                return inquiryDate >= startDate;
+            });
+            
+            displayCustomers(filteredCustomers);
+        }
+        
+        // 검색 기능
+        document.getElementById('search-input').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase();
+            const searchResults = customers.filter(customer => 
+                (customer.customer_name && customer.customer_name.toLowerCase().includes(searchTerm)) ||
+                (customer.phone && customer.phone.includes(searchTerm)) ||
+                (customer.location && customer.location.toLowerCase().includes(searchTerm))
+            );
+            displayCustomers(searchResults);
+        });
+        
+        // 명언 로드
+        async function loadQuote() {
+            const refreshBtn = document.getElementById('quote-refresh');
+            const quoteText = document.getElementById('quote-text');
+            const quoteAuthor = document.getElementById('quote-author');
+            
+            // 로딩 상태 표시
+            refreshBtn.style.opacity = '0.5';
+            refreshBtn.style.pointerEvents = 'none';
+            
+            try {
+                const response = await fetch('https://korean-quotes.vercel.app/api/random');
+                const data = await response.json();
+                
+                if (data.quote && data.author) {
+                    quoteText.textContent = data.quote;
+                    quoteAuthor.textContent = `- ${data.author} -`;
+                } else {
+                    throw new Error('Invalid response format');
+                }
+            } catch (error) {
+                console.error('명언 로드 실패:', error);
+                quoteText.textContent = '오늘도 좋은 하루 되세요!';
+                quoteAuthor.textContent = '- 집노트 -';
+            } finally {
+                // 로딩 상태 해제
+                refreshBtn.style.opacity = '1';
+                refreshBtn.style.pointerEvents = 'auto';
+            }
+        }
+        
+        // 알림 표시
+        function showAlert(message, type) {
+            const alertContainer = document.getElementById('alert-container');
+            const alertDiv = document.createElement('div');
+            alertDiv.className = `alert alert-${type}`;
+            alertDiv.textContent = message;
+            
+            alertContainer.innerHTML = '';
+            alertContainer.appendChild(alertDiv);
+            
+            setTimeout(() => {
+                alertDiv.remove();
+            }, 5000);
+        }
+
+        // 보증보험 매물 리스트 불러오기
+        function loadGuaranteeLogs() {
+            fetch('/api/guarantee-list')
+                .then(res => res.json())
+                .then(data => {
+                    const container = document.getElementById('guarantee-link-list');
+                    if (!Array.isArray(data) || data.length === 0) {
+                        container.innerHTML = '<div class="empty-state">보증보험 가능한 매물이 없습니다.</div>';
+                        return;
+                    }
+                    container.innerHTML = `
+                        <div class="table-container">
+                            <table class="customers-table guarantee-table">
+                                <thead>
+                                    <tr>
+                                        <th>플랫폼</th>
+                                        <th>날짜</th>
+                                        <th>URL</th>
+                                        <th>보증보험</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${data.map(link => `
+                                        <tr>
+                                            <td><span class="platform-badge">${link.platform}</span></td>
+                                            <td>${link.date_added}</td>
+                                            <td><a href="${link.url}" target="_blank" class="guarantee-url">${link.url}</a></td>
+                                            <td><span class="guarantee-badge-table">보증보험</span></td>
+                                        </tr>
+                                    `).join('')}
+                                </tbody>
+                            </table>
+                        </div>
+                    `;
+                });
+        }
+    </script>
+</body>
+</html> 

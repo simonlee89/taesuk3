@@ -1,0 +1,2692 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>프리미엄 업무공간 - 에르메스 컬렉션</title>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        @import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.8/dist/web/static/pretendard.css');
+        
+        :root {
+            /* 에르메스 프리미엄 컬러 팔레트 */
+            --hermes-orange: #FF8C00;
+            --hermes-orange-light: #FFB84D;
+            --hermes-orange-dark: #CC7000;
+            --hermes-brown: #8B4513;
+            --hermes-brown-light: #A0522D;
+            --hermes-brown-dark: #5D2F0A;
+            --hermes-cream: #FFF8DC;
+            --hermes-charcoal: #2F2F2F;
+            --hermes-gold: #FFD700;
+            --hermes-gold-light: #FFED4A;
+            --hermes-beige: #F5F5DC;
+            --hermes-silver: #C0C0C0;
+            
+            /* 럭셔리 그라데이션 */
+            --gradient-primary: linear-gradient(135deg, #FF8C00 0%, #FFB84D 50%, #FFED4A 100%);
+            --gradient-secondary: linear-gradient(135deg, #8B4513 0%, #A0522D 50%, #D2691E 100%);
+            --gradient-luxury: linear-gradient(135deg, #FFD700 0%, #FFA500 50%, #FF8C00 100%);
+            --gradient-elegant: linear-gradient(135deg, #2F2F2F 0%, #5D2F0A 50%, #8B4513 100%);
+            --gradient-surface: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 50%, #FAEBD7 100%);
+            
+            /* 배경 */
+            --bg-main: linear-gradient(135deg, #FEFCF3 0%, #FFF8DC 100%);
+            --bg-card: #FFFFFF;
+            --bg-section: var(--hermes-cream);
+            --bg-hover: rgba(255, 140, 0, 0.08);
+            --bg-glass: rgba(255, 255, 255, 0.95);
+            
+            /* 텍스트 색상 */
+            --text-primary: var(--hermes-charcoal);
+            --text-secondary: var(--hermes-brown);
+            --text-accent: var(--hermes-orange);
+            --text-muted: #8B7355;
+            --text-white: #FFFFFF;
+            --text-luxury: var(--hermes-gold);
+            
+            /* 프리미엄 그림자 */
+            --shadow-soft: 0 4px 12px rgba(255, 140, 0, 0.12);
+            --shadow-medium: 0 8px 25px rgba(255, 140, 0, 0.18);
+            --shadow-deep: 0 16px 40px rgba(255, 140, 0, 0.25);
+            --shadow-luxury: 0 20px 60px rgba(139, 69, 19, 0.3);
+            --shadow-glass: 0 8px 32px rgba(0, 0, 0, 0.1);
+            --shadow-card: 0 2px 20px rgba(0, 0, 0, 0.08);
+            
+            /* 테두리 */
+            --border-luxury: 1px solid rgba(255, 140, 0, 0.3);
+            --border-elegant: 1px solid rgba(139, 69, 19, 0.2);
+            --border-radius: 20px;
+            --border-radius-lg: 28px;
+            --border-radius-xl: 40px;
+            
+            /* 럭셔리 애니메이션 */
+            --ease-luxury: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            --ease-elegant: cubic-bezier(0.4, 0.0, 0.2, 1);
+            --ease-premium: cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            
+            /* 스페이싱 */
+            --spacing-xs: 8px;
+            --spacing-sm: 16px;
+            --spacing-md: 24px;
+            --spacing-lg: 32px;
+            --spacing-xl: 48px;
+            --spacing-2xl: 64px;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, sans-serif;
+            background: var(--bg-main);
+            min-height: 100vh;
+            line-height: 1.8;
+            color: var(--text-primary);
+            font-weight: 400;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+        
+        /* 럭셔리 애니메이션 */
+        @keyframes luxury-entrance {
+            0% { 
+                opacity: 0; 
+                transform: translateY(50px) scale(0.95);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+            }
+        }
+        
+        @keyframes premium-float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-15px) rotate(2deg); }
+        }
+        
+        @keyframes golden-shimmer {
+            0% { transform: translateX(-100%) rotate(45deg); }
+            100% { transform: translateX(200%) rotate(45deg); }
+        }
+        
+        @keyframes elegant-pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+        
+        @keyframes luxury-glow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 140, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(255, 140, 0, 0.6);
+            }
+        }
+        
+        /* 헤더 - 프리미엄 스타일 */
+        .header {
+            background: var(--bg-glass);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: var(--border-luxury);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            animation: luxury-entrance 1s var(--ease-luxury);
+        }
+        
+        .header-content {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--spacing-xs) var(--spacing-md);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 800;
+            background: var(--gradient-luxury);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            position: relative;
+            letter-spacing: -0.02em;
+            max-width: 50%;
+            white-space: nowrap;
+            overflow: hidden;
+        }
+        
+        .logo::before {
+            content: '🏢';
+            font-size: 20px;
+            animation: premium-float 8s ease-in-out infinite;
+            filter: drop-shadow(0 4px 8px rgba(255, 140, 0, 0.4));
+            margin-right: 4px;
+        }
+        
+        .logo::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(90deg, transparent 0%, rgba(255, 215, 0, 0.3) 50%, transparent 100%);
+            animation: golden-shimmer 3s ease-in-out infinite;
+            pointer-events: none;
+        }
+        
+        .customer-info {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            font-size: 12px;
+            font-weight: 500;
+        }
+        
+        .customer-name, .date-selector {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            background: var(--gradient-primary);
+            color: var(--text-white);
+            border: none;
+            border-radius: var(--border-radius);
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s var(--ease-luxury);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-soft);
+            font-family: inherit;
+            font-size: 12px;
+        }
+        
+        .customer-name::before, .date-selector::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s var(--ease-luxury);
+        }
+        
+        .customer-name:hover::before, .date-selector:hover::before {
+            left: 100%;
+        }
+        
+        .customer-name:hover, .date-selector:hover {
+            transform: translateY(-4px) scale(1.05);
+            box-shadow: var(--shadow-medium);
+            animation: luxury-glow 2s ease-in-out infinite;
+        }
+        
+        /* 메인 컨테이너 */
+        .container {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: var(--spacing-2xl) var(--spacing-xl);
+            animation: luxury-entrance 1.2s var(--ease-luxury) 0.3s both;
+        }
+        
+        .main-content {
+            display: grid;
+            grid-template-columns: 500px 1.2fr;
+            gap: var(--spacing-2xl);
+            align-items: start;
+        }
+        
+        /* 카드 컴포넌트 - 프리미엄 스타일 */
+        .content-section {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-card);
+            border: var(--border-luxury);
+            transition: all 0.4s var(--ease-luxury);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .content-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: var(--gradient-primary);
+            border-radius: var(--border-radius-xl) var(--border-radius-xl) 0 0;
+        }
+        
+        .content-section::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 140, 0, 0.02) 100%);
+            pointer-events: none;
+        }
+        
+        .content-section:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--shadow-deep);
+            border-color: var(--hermes-orange);
+        }
+        
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            background: var(--gradient-elegant);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: var(--spacing-lg);
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            max-width: 50%;
+        }
+        
+        .section-title::after {
+            content: '';
+            flex: 1;
+            height: 3px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+            margin-left: var(--spacing-md);
+        }
+        
+        /* 폼 컴포넌트 - 럭셔리 스타일 */
+        .form-group {
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: var(--spacing-sm);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 16px;
+            position: relative;
+        }
+        
+        .form-group label::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 30px;
+            height: 2px;
+            background: var(--gradient-primary);
+            border-radius: 1px;
+        }
+        
+        .form-group input, .form-group select, .form-group textarea {
+            width: 100%;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid rgba(255, 140, 0, 0.2);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            transition: all 0.3s var(--ease-luxury);
+            background: var(--bg-card);
+            color: var(--text-primary);
+            font-family: inherit;
+            position: relative;
+        }
+        
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: var(--hermes-orange);
+            box-shadow: 0 0 0 6px rgba(255, 140, 0, 0.15);
+            transform: translateY(-2px);
+            background: rgba(255, 248, 220, 0.5);
+        }
+        
+        .form-group input:focus::placeholder {
+            color: var(--text-muted);
+            opacity: 0.7;
+        }
+        
+        /* 버튼 컴포넌트 - 고급스러운 사각형 스타일 */
+        .btn {
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: 6px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.4s var(--ease-luxury);
+            position: relative;
+            overflow: hidden;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-xs);
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.2), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            font-family: inherit;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .btn-primary {
+            background: var(--gradient-primary);
+            color: var(--text-white);
+            position: relative;
+        }
+        
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+            transition: left 0.6s var(--ease-luxury);
+        }
+        
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(255, 140, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 140, 0, 0.5);
+            animation: luxury-glow 2s ease-in-out infinite;
+        }
+        
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border: 2px solid var(--hermes-orange);
+        }
+        
+        .btn-secondary:hover {
+            background: var(--hermes-orange);
+            color: var(--text-white);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(255, 140, 0, 0.3), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 매물 목록 - 럭셔리 스타일 */
+        .property-list {
+            display: grid;
+            gap: var(--spacing-xs);
+            margin-top: var(--spacing-lg);
+            max-height: 70vh;
+            overflow-y: auto;
+            padding-right: var(--spacing-sm);
+        }
+        
+        /* 에르메스 프리미엄 커스텀 스크롤바 */
+        .property-list::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        .property-list::-webkit-scrollbar-track {
+            background: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 100%);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 140, 0, 0.15);
+            box-shadow: inset 0 2px 4px rgba(139, 69, 19, 0.1);
+        }
+        
+        .property-list::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #FF8C00 0%, #CC7000 50%, #8B4513 100%);
+            border-radius: 10px;
+            border: 2px solid #FFF8DC;
+            transition: all 0.3s var(--ease-luxury);
+            box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+        }
+        
+        .property-list::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #FFB84D 0%, #FF8C00 50%, #CC7000 100%);
+            transform: scale(1.1);
+            box-shadow: 0 4px 15px rgba(255, 140, 0, 0.5);
+            border-color: #FFD700;
+        }
+        
+        .property-list::-webkit-scrollbar-thumb:active {
+            background: linear-gradient(135deg, #CC7000 0%, #8B4513 50%, #5D2F0A 100%);
+            transform: scale(0.95);
+        }
+        
+        /* Firefox 에르메스 스크롤바 */
+        .property-list {
+            scrollbar-width: thin;
+            scrollbar-color: #FF8C00 #FFF8DC;
+            scroll-behavior: smooth;
+        }
+        
+        /* 스크롤 페이드 효과 */
+        .content-section {
+            position: relative;
+        }
+        
+        .content-section::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            height: 30px;
+            background: linear-gradient(transparent, var(--bg-card));
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s var(--ease-luxury);
+        }
+        
+        .content-section.has-scroll::after {
+            opacity: 1;
+        }
+        
+        .property-item {
+            background: var(--bg-card);
+            border-radius: 4px;
+            padding: var(--spacing-xs);
+            border: var(--border-luxury);
+            transition: all 0.4s var(--ease-luxury);
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            margin-bottom: var(--spacing-xs);
+        }
+        
+        .property-item::before {
+            display: none;
+        }
+        
+        .property-item::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            bottom: 0;
+            left: 0;
+            background: linear-gradient(135deg, transparent 0%, rgba(255, 140, 0, 0.03) 100%);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease-luxury);
+            pointer-events: none;
+        }
+        
+        .property-item:hover::before {
+            display: none;
+        }
+        
+        .property-item:hover::after {
+            opacity: 1;
+        }
+        
+        .property-item:hover {
+            box-shadow: var(--shadow-medium);
+            border-color: var(--hermes-orange);
+        }
+        
+        .property-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 4px;
+        }
+        
+        .property-platform {
+            background: var(--gradient-primary);
+            color: var(--text-white);
+            padding: 4px 8px;
+            border-radius: 3px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: var(--shadow-soft);
+        }
+        
+        /* 네모 플랫폼 전용 색상 */
+        .property-platform.nemo {
+            background: linear-gradient(135deg, #4A90E2, #5BA3F5);
+            box-shadow: 0 4px 15px rgba(74, 144, 226, 0.3);
+        }
+        
+        /* 기타 플랫폼 색상 */
+        .property-platform.etc {
+            background: linear-gradient(135deg, #9B59B6, #BB6BD9);
+            box-shadow: 0 4px 15px rgba(155, 89, 182, 0.3);
+        }
+        
+        /* 필터 컨트롤 스타일 */
+        .filter-controls {
+            display: flex;
+            gap: var(--spacing-sm);
+            align-items: center;
+            margin-bottom: var(--spacing-md);
+            padding: var(--spacing-sm);
+            background: var(--bg-card);
+            border-radius: 4px;
+            border: var(--border-luxury);
+            box-shadow: var(--shadow-card);
+            flex-wrap: wrap;
+        }
+        
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+        }
+        
+        .filter-group label {
+            font-weight: 600;
+            color: var(--text-primary);
+            min-width: 40px;
+            font-size: 13px;
+        }
+        
+        .filter-group select {
+            padding: var(--spacing-xs) var(--spacing-sm);
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: var(--border-radius);
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            font-weight: 500;
+            transition: all 0.3s var(--ease-luxury);
+            min-width: 80px;
+            font-size: 13px;
+        }
+        
+        .filter-group select:focus {
+            outline: none;
+            border-color: var(--hermes-orange);
+            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.15);
+        }
+        
+        .filter-stats {
+            margin-left: auto;
+            display: flex;
+            gap: var(--spacing-xs);
+            font-weight: 600;
+            color: var(--text-secondary);
+            font-size: 13px;
+        }
+        
+        .filter-stats span {
+            padding: 4px var(--spacing-xs);
+            background: var(--gradient-surface);
+            border-radius: 12px;
+            font-size: 12px;
+        }
+        
+        .property-actions {
+            display: flex;
+            gap: 4px;
+        }
+        
+        .action-btn {
+            width: 30px;
+            height: 30px;
+            border: 2px solid rgba(255, 140, 0, 0.2);
+            border-radius: 6px;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-luxury);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.2);
+            position: relative;
+            overflow: hidden;
+            font-weight: 600;
+        }
+        
+        .action-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.05) 50%, transparent 100%);
+            opacity: 0;
+            transition: all 0.3s var(--ease-luxury);
+        }
+        
+        .action-btn:hover::before {
+            opacity: 1;
+        }
+        
+        .action-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25), inset 0 1px 0 rgba(255, 255, 255, 0.3);
+            border-color: rgba(255, 140, 0, 0.4);
+        }
+        
+        .like-btn {
+            background: linear-gradient(135deg, #D4AF37, #FFD700);
+            color: #8B4513;
+            border-color: rgba(212, 175, 55, 0.4);
+        }
+        
+        .dislike-btn {
+            background: linear-gradient(135deg, #8B7D6B, #A0937D);
+            color: #3D3530;
+            border-color: rgba(139, 125, 107, 0.4);
+        }
+        
+        .edit-btn {
+            background: var(--gradient-primary);
+            color: white;
+            border-color: rgba(255, 140, 0, 0.4);
+        }
+        
+        .delete-btn {
+            background: linear-gradient(135deg, #8B4513, #A0522D);
+            color: #FFF8DC;
+            border-color: rgba(139, 69, 19, 0.4);
+        }
+        
+        .property-url {
+            color: var(--hermes-orange);
+            text-decoration: none;
+            font-weight: 600;
+            transition: all 0.3s var(--ease-luxury);
+            display: block;
+            margin-bottom: 4px;
+            position: relative;
+            overflow: hidden;
+            font-size: 14px;
+        }
+        
+        .property-url::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient-primary);
+            transition: width 0.3s var(--ease-luxury);
+        }
+        
+        .property-url:hover::after {
+            width: 100%;
+        }
+        
+        .property-url:hover {
+            color: var(--hermes-orange-dark);
+            transform: translateX(8px);
+        }
+        
+        .property-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 2px;
+            padding-top: 2px;
+            border-top: 1px solid rgba(255, 140, 0, 0.1);
+        }
+
+        /* 반응형 디자인 - 모바일 최적화 */
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-lg);
+            }
+            
+            .container {
+                padding: var(--spacing-lg) var(--spacing-md);
+            }
+            
+            .header-content {
+                padding: var(--spacing-md);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .logo {
+                font-size: 16px;
+            }
+            
+            .logo::before {
+                font-size: 18px;
+            }
+            
+            .customer-info {
+                flex-direction: row;
+                gap: var(--spacing-xs);
+                font-size: 10px;
+            }
+            
+            .customer-name, .date-selector {
+                padding: 4px var(--spacing-xs);
+                font-size: 10px;
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .content-section {
+                padding: var(--spacing-lg);
+            }
+            
+            .property-header {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+                align-items: flex-start;
+            }
+            
+            .property-actions {
+                width: 100%;
+                justify-content: flex-end;
+            }
+            
+            .action-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 16px;
+            }
+            
+            .property-meta {
+                flex-direction: column;
+                gap: var(--spacing-xs);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .container {
+                padding: var(--spacing-md) var(--spacing-sm);
+            }
+            
+            .header-content {
+                flex-direction: row;
+                gap: var(--spacing-xs);
+                align-items: center;
+                justify-content: space-between;
+                padding: 4px var(--spacing-xs);
+            }
+            
+            .logo {
+                font-size: 14px;
+            }
+            
+            .logo::before {
+                font-size: 16px;
+                margin-right: 2px;
+            }
+            
+            .section-title {
+                font-size: 20px;
+            }
+            
+            .content-section {
+                padding: var(--spacing-md);
+            }
+            
+            .property-item {
+                padding: var(--spacing-md);
+            }
+            
+            .property-actions {
+                gap: var(--spacing-xs);
+            }
+        }
+        
+        /* 평점 선택 모달 */
+        .rating-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s var(--ease-luxury);
+        }
+        
+        .rating-modal.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .rating-modal-content {
+            background: var(--bg-card);
+            border-radius: var(--border-radius-xl);
+            padding: var(--spacing-xl);
+            box-shadow: var(--shadow-luxury);
+            border: var(--border-luxury);
+            text-align: center;
+            min-width: 320px;
+            transform: scale(0.8) translateY(20px);
+            transition: all 0.3s var(--ease-luxury);
+        }
+        
+        .rating-modal.show .rating-modal-content {
+            transform: scale(1) translateY(0);
+        }
+        
+        .rating-modal h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            margin-bottom: var(--spacing-lg);
+            background: var(--gradient-elegant);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+        
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-lg);
+        }
+        
+        .star {
+            font-size: 40px;
+            cursor: pointer;
+            transition: all 0.2s var(--ease-luxury);
+            color: #ddd;
+        }
+        
+        .star:hover,
+        .star.active {
+            color: var(--hermes-gold);
+            transform: scale(1.2) rotate(15deg);
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        
+        .modal-buttons {
+            display: flex;
+            gap: var(--spacing-sm);
+            justify-content: center;
+        }
+        
+        /* 에르메스 좋아요/싫어요 버튼 개선 */
+        .like-btn.active {
+            background: linear-gradient(135deg, #B8860B, #DAA520, #CD853F);
+            color: #FFFFFF;
+            transform: scale(1.1);
+            animation: hermes-gold-glow 1.5s ease-in-out infinite;
+            box-shadow: 0 4px 20px rgba(184, 134, 11, 0.5);
+            font-weight: bold;
+        }
+        
+        .dislike-btn.active {
+            background: linear-gradient(135deg, #8B7D6B, #A0937D, #B5A490);
+            color: #3D3530;
+            transform: scale(1.1);
+            box-shadow: 0 4px 20px rgba(139, 125, 107, 0.3);
+        }
+        
+        @keyframes hermes-gold-glow {
+            0%, 100% { 
+                transform: scale(1.1);
+                box-shadow: 0 4px 20px rgba(212, 175, 55, 0.4);
+            }
+            50% { 
+                transform: scale(1.2);
+                box-shadow: 0 6px 30px rgba(255, 215, 0, 0.6);
+            }
+        }
+
+        /* 에르메스 좋아요/싫어요 상태에 따른 매물 div 색상 변경 */
+        .property-item.liked {
+            background: linear-gradient(135deg, rgba(212, 175, 55, 0.08), rgba(255, 215, 0, 0.12));
+            border-color: rgba(212, 175, 55, 0.4);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+        }
+
+        .property-item.liked::before {
+            display: none;
+        }
+
+        .property-item.liked::after {
+            background: linear-gradient(135deg, transparent 0%, rgba(212, 175, 55, 0.06) 100%);
+            opacity: 1;
+        }
+
+        .property-item.disliked {
+            background: linear-gradient(135deg, rgba(139, 125, 107, 0.06), rgba(160, 147, 125, 0.1));
+            border-color: rgba(139, 125, 107, 0.3);
+            box-shadow: 0 4px 20px rgba(139, 125, 107, 0.15);
+        }
+
+        .property-item.disliked::before {
+            display: none;
+        }
+
+        .property-item.disliked::after {
+            background: linear-gradient(135deg, transparent 0%, rgba(139, 125, 107, 0.04) 100%);
+            opacity: 1;
+        }
+
+        .property-item.disliked .property-url {
+            color: #8B7D6B;
+        }
+
+        .property-item.disliked .property-platform {
+            background: linear-gradient(135deg, #8B7D6B, #A0937D);
+        }
+
+        /* 에르메스 좋아요/싫어요 상태에서의 호버 효과 개선 */
+        .property-item.liked:hover {
+            box-shadow: 0 8px 35px rgba(212, 175, 55, 0.35);
+            border-color: rgba(255, 215, 0, 0.6);
+        }
+
+        .property-item.disliked:hover {
+            box-shadow: 0 8px 35px rgba(139, 125, 107, 0.25);
+            border-color: rgba(160, 147, 125, 0.5);
+        }
+
+        /* 달력 입력 스타일 */
+        .date-picker-container {
+            margin: var(--spacing-lg) 0;
+            display: flex;
+            justify-content: center;
+        }
+
+        .date-picker-input {
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: var(--border-radius);
+            font-size: 16px;
+            font-family: inherit;
+            background: var(--bg-card);
+            color: var(--text-primary);
+            transition: all 0.3s var(--ease-luxury);
+            min-width: 200px;
+            text-align: center;
+        }
+
+        .date-picker-input:focus {
+            outline: none;
+            border-color: var(--hermes-orange);
+            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.15);
+            transform: translateY(-2px);
+        }
+
+        /* 알림 스타일 */
+        .notification {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: var(--spacing-sm) var(--spacing-md);
+            border-radius: var(--border-radius);
+            color: white;
+            font-weight: 600;
+            z-index: 10001;
+            animation: luxury-entrance 0.4s var(--ease-luxury);
+            box-shadow: var(--shadow-medium);
+            backdrop-filter: blur(10px);
+            min-width: 250px;
+            text-align: center;
+        }
+
+        .notification.success {
+            background: linear-gradient(135deg, #10B981, #34D399);
+        }
+
+        .notification.error {
+            background: linear-gradient(135deg, #EF4444, #F87171);
+        }
+
+        .notification.warning {
+            background: linear-gradient(135deg, #F59E0B, #FBBF24);
+        }
+
+        .notification.info {
+            background: linear-gradient(135deg, #3B82F6, #60A5FA);
+        }
+
+        @media (max-width: 480px) {
+            .notification {
+                top: 10px;
+                right: 10px;
+                left: 10px;
+                min-width: auto;
+            }
+        }
+        
+        .rating {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-xs);
+            margin: 4px 0;
+        }
+        
+        .star {
+            color: var(--hermes-gold);
+            font-size: 18px;
+            transition: all 0.2s var(--ease-luxury);
+            cursor: pointer;
+        }
+        
+        .star:hover {
+            transform: scale(1.3) rotate(15deg);
+            filter: drop-shadow(0 2px 4px rgba(255, 215, 0, 0.5));
+        }
+        
+        .memo {
+            background: var(--gradient-surface);
+            border-radius: var(--border-radius);
+            padding: var(--spacing-xs);
+            margin: 4px 0;
+            font-style: italic;
+            color: var(--text-secondary);
+            border-left: 4px solid var(--hermes-orange);
+            position: relative;
+            font-size: 13px;
+        }
+        
+        .memo::before {
+            content: '💭';
+            position: absolute;
+            top: var(--spacing-xs);
+            right: var(--spacing-xs);
+            font-size: 14px;
+            opacity: 0.6;
+        }
+        
+        /* 체크박스 스타일 */
+        .form-group input[type="checkbox"] {
+            width: auto;
+            margin-right: var(--spacing-xs);
+            transform: scale(1.2);
+            accent-color: var(--hermes-orange);
+        }
+        
+        .form-group label:has(input[type="checkbox"]) {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: var(--spacing-sm);
+            border-radius: var(--border-radius);
+            transition: all 0.3s var(--ease-luxury);
+        }
+        
+        .form-group label:has(input[type="checkbox"]):hover {
+            background: var(--bg-hover);
+        }
+        
+        /* 로딩 애니메이션 */
+        .loading {
+            display: inline-block;
+            width: 24px;
+            height: 24px;
+            border: 3px solid rgba(255, 140, 0, 0.3);
+            border-radius: 50%;
+            border-top-color: var(--hermes-orange);
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* 알림 메시지 */
+        .notification {
+            position: fixed;
+            top: var(--spacing-md);
+            right: var(--spacing-md);
+            padding: var(--spacing-sm) var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            color: white;
+            font-weight: 600;
+            z-index: 2000;
+            animation: luxury-entrance 0.4s var(--ease-luxury);
+            box-shadow: var(--shadow-medium);
+            backdrop-filter: blur(10px);
+        }
+        
+        .notification.success {
+            background: linear-gradient(135deg, #10B981, #34D399);
+        }
+        
+        .notification.error {
+            background: linear-gradient(135deg, #EF4444, #F87171);
+        }
+        
+        /* 에르메스 고급스러운 스크롤바 */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+        
+        ::-webkit-scrollbar-track {
+            background: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 100%);
+            border-radius: 6px;
+            border: 1px solid rgba(255, 140, 0, 0.1);
+            box-shadow: inset 0 1px 3px rgba(139, 69, 19, 0.08);
+        }
+        
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #FF8C00 0%, #CC7000 50%, #8B4513 100%);
+            border-radius: 6px;
+            border: 2px solid #FFF8DC;
+            box-shadow: 0 2px 6px rgba(255, 140, 0, 0.25);
+            transition: all 0.3s ease;
+        }
+        
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(135deg, #FFB84D 0%, #FF8C00 50%, #CC7000 100%);
+            box-shadow: 0 4px 12px rgba(255, 140, 0, 0.4);
+            border-color: #FFD700;
+        }
+        
+        /* 모달 스타일 */
+        .rating-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(8px);
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .rating-modal.show {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .rating-modal-content {
+            background: var(--bg-card);
+            padding: var(--spacing-xl);
+            border-radius: var(--border-radius-xl);
+            box-shadow: var(--shadow-luxury);
+            border: var(--border-luxury);
+            text-align: center;
+            min-width: 400px;
+            max-width: 500px;
+            animation: slideIn 0.3s ease-out;
+            position: relative;
+        }
+
+        .rating-modal-content h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-primary);
+            margin-bottom: var(--spacing-lg);
+            background: var(--gradient-luxury);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .star-rating {
+            display: flex;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            margin: var(--spacing-lg) 0;
+        }
+
+        .star-rating .star {
+            font-size: 36px;
+            color: #ddd;
+            cursor: pointer;
+            transition: all 0.3s var(--ease-luxury);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .star-rating .star:hover,
+        .star-rating .star.active {
+            color: var(--hermes-gold);
+            transform: scale(1.2) rotate(10deg);
+            filter: drop-shadow(0 4px 8px rgba(255, 215, 0, 0.4));
+        }
+
+        .modal-buttons {
+            display: flex;
+            gap: var(--spacing-md);
+            justify-content: center;
+            margin-top: var(--spacing-lg);
+        }
+
+        .modal-buttons .btn {
+            min-width: 120px;
+            padding: var(--spacing-sm) var(--spacing-lg);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideIn {
+            from { 
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to { 
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* 반응형 디자인 */
+        @media (max-width: 1400px) {
+            .main-content {
+                grid-template-columns: 1fr;
+                gap: var(--spacing-xl);
+            }
+            
+            .container {
+                padding: var(--spacing-xl) var(--spacing-lg);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .header-content {
+                padding: 1px;
+                flex-direction: row;
+                gap: 1px;
+                justify-content: space-between;
+                align-items: center;
+                min-height: 20px;
+            }
+            
+            .logo {
+                font-size: 6px;
+                font-weight: 500;
+            }
+            
+            .logo::before {
+                font-size: 8px;
+                margin-right: 1px;
+            }
+            
+            .customer-info {
+                flex-direction: row;
+                gap: 1px;
+                width: auto;
+                justify-content: flex-end;
+            }
+            
+            .customer-name, .date-selector {
+                font-size: 5px;
+                padding: 1px 2px;
+                border-radius: 2px;
+            }
+            
+            .container {
+                padding: 1px;
+            }
+            
+            .content-section {
+                padding: 2px 1px;
+                margin-bottom: 2px;
+            }
+            
+            .section-title {
+                font-size: 8px;
+                margin-bottom: 2px;
+                font-weight: 600;
+            }
+            
+            .form-group {
+                margin-bottom: 2px;
+            }
+            
+            .form-group label {
+                font-size: 6px;
+                margin-bottom: 1px;
+            }
+            
+            .form-group input, .form-group select, .form-group textarea {
+                font-size: 6px;
+                padding: 2px;
+                border-radius: 2px;
+            }
+            
+            .btn {
+                padding: 2px 4px;
+                font-size: 6px;
+                border-radius: 2px;
+            }
+            
+            .property-item {
+                padding: 2px;
+                margin-bottom: 2px;
+                border-radius: 2px;
+            }
+            
+            .property-header {
+                margin-bottom: 1px;
+            }
+            
+            .property-platform {
+                font-size: 5px;
+                padding: 1px;
+                border-radius: 1px;
+            }
+            
+            .property-number {
+                font-size: 5px;
+                padding: 1px;
+                border-radius: 1px;
+            }
+            
+            .property-url {
+                font-size: 6px;
+                margin-bottom: 1px;
+            }
+            
+            .property-actions {
+                flex-wrap: wrap;
+                gap: 1px;
+                margin-bottom: 1px;
+            }
+            
+            .action-btn {
+                font-size: 7px;
+                padding: 1px;
+                min-width: 12px;
+                height: 12px;
+                width: 12px;
+            }
+            
+            .property-rating {
+                margin-bottom: 1px;
+            }
+            
+            .property-memo {
+                font-size: 5px;
+                margin-bottom: 1px;
+            }
+            
+            .property-date {
+                font-size: 5px;
+            }
+            
+            /* 필터 컨트롤 모바일 최적화 */
+            .filter-controls {
+                padding: 2px;
+                margin-bottom: 2px;
+                border-radius: 2px;
+                flex-direction: column;
+                gap: 1px;
+            }
+            
+            .filter-group {
+                gap: 1px;
+            }
+            
+            .filter-group label {
+                font-size: 5px;
+                min-width: 25px;
+            }
+            
+            .filter-group select {
+                padding: 1px 2px;
+                font-size: 5px;
+                min-width: 45px;
+                border-radius: 1px;
+            }
+            
+            .filter-stats {
+                margin-left: 0;
+                justify-content: center;
+                flex-wrap: wrap;
+                gap: 1px;
+            }
+            
+            .filter-stats span {
+                font-size: 4px;
+                padding: 1px;
+                border-radius: 1px;
+            }
+            
+            /* 모달 반응형 */
+            .rating-modal-content {
+                min-width: 300px;
+                margin: 16px;
+                padding: 20px;
+                border-radius: 16px;
+            }
+            
+            .rating-modal-content h3 {
+                font-size: 18px;
+                margin-bottom: 16px;
+            }
+            
+            .star-rating .star {
+                font-size: 24px;
+            }
+            
+            .modal-buttons .btn {
+                min-width: 80px;
+                font-size: 14px;
+                padding: 8px 16px;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .header-content {
+                padding: 4px 3px;
+            }
+            
+            .logo {
+                font-size: 12px;
+            }
+            
+            .logo::before {
+                font-size: 14px;
+                margin-right: 1px;
+            }
+            
+            .customer-name, .date-selector {
+                font-size: 10px;
+                padding: 3px 6px;
+                border-radius: 10px;
+            }
+            
+            .container {
+                padding: 12px 6px;
+            }
+            
+            .content-section {
+                padding: 12px 8px;
+                margin-bottom: 12px;
+                border-radius: 10px;
+            }
+            
+            .section-title {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            
+            .form-group {
+                margin-bottom: 10px;
+            }
+            
+            .form-group label {
+                font-size: 13px;
+                margin-bottom: 5px;
+            }
+            
+            .form-group input, .form-group select, .form-group textarea {
+                font-size: 13px;
+                padding: 8px;
+                border-radius: 6px;
+            }
+            
+            .btn {
+                padding: 8px 12px;
+                font-size: 13px;
+                border-radius: 6px;
+            }
+            
+            .property-item {
+                padding: 10px;
+                margin-bottom: 10px;
+                border-radius: 10px;
+            }
+            
+            .property-header {
+                margin-bottom: 6px;
+            }
+            
+            .property-platform {
+                font-size: 9px;
+                padding: 3px 6px;
+                border-radius: 10px;
+            }
+            
+            .property-number {
+                font-size: 9px;
+                padding: 2px 5px;
+                border-radius: 1px;
+            }
+            
+            .property-url {
+                font-size: 13px;
+                word-break: break-all;
+                margin-bottom: 6px;
+            }
+            
+            .property-actions {
+                gap: 4px;
+                margin-bottom: 6px;
+            }
+            
+            .action-btn {
+                font-size: 12px;
+                padding: 4px;
+                min-width: 28px;
+                height: 28px;
+            }
+            
+            .property-rating {
+                margin-bottom: 6px;
+            }
+            
+            .property-rating .stars {
+                font-size: 14px;
+            }
+            
+            .property-memo {
+                font-size: 12px;
+                margin-bottom: 6px;
+            }
+            
+            .property-date {
+                font-size: 11px;
+            }
+            
+            /* 필터 컨트롤 작은 모바일 최적화 */
+            .filter-controls {
+                padding: 10px;
+                margin-bottom: 12px;
+                border-radius: 10px;
+                gap: 10px;
+            }
+            
+            .filter-group label {
+                font-size: 13px;
+                min-width: 45px;
+            }
+            
+            .filter-group select {
+                padding: 6px 10px;
+                font-size: 13px;
+                min-width: 90px;
+                border-radius: 6px;
+            }
+            
+            .filter-stats {
+                gap: 6px;
+            }
+            
+            .filter-stats span {
+                font-size: 11px;
+                padding: 3px 6px;
+                border-radius: 8px;
+            }
+            
+            /* 모달 작은 모바일 최적화 */
+            .rating-modal-content {
+                min-width: 260px;
+                margin: 12px;
+                padding: 16px;
+                border-radius: 12px;
+            }
+            
+            .rating-modal-content h3 {
+                font-size: 16px;
+                margin-bottom: 12px;
+            }
+            
+            .star-rating .star {
+                font-size: 20px;
+            }
+            
+            .modal-buttons .btn {
+                min-width: 70px;
+                font-size: 13px;
+                padding: 6px 12px;
+            }
+            
+            /* 메모 모달 작은 모바일 최적화 */
+            .memo-modal-content {
+                width: 95vw;
+                max-height: 85vh;
+                border-radius: 12px;
+            }
+            
+            .memo-modal-header {
+                padding: 12px 16px;
+            }
+            
+            .memo-modal-header h3 {
+                font-size: 16px;
+            }
+            
+            .memo-modal-body {
+                padding: 16px;
+                flex-direction: column;
+                gap: 12px;
+            }
+            
+            .memo-input-container textarea {
+                min-height: 120px;
+                font-size: 14px;
+                padding: 10px;
+            }
+            
+            .memo-tips {
+                order: -1;
+            }
+            
+            .memo-tips h4 {
+                font-size: 14px;
+            }
+            
+            .memo-tips ul li {
+                font-size: 12px;
+            }
+        }
+        
+        /* 고급 메모 모달 스타일 */
+        .memo-modal-content {
+            background: var(--bg-card);
+            padding: 0;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            border: var(--border-luxury);
+            max-width: 600px;
+            width: 90vw;
+            max-height: 80vh;
+            overflow: hidden;
+            animation: luxury-entrance 0.4s var(--ease-luxury);
+        }
+        
+        .memo-modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: var(--gradient-primary);
+            color: white;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .memo-modal-header h3 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 700;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 28px;
+            cursor: pointer;
+            padding: 0;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s var(--ease-luxury);
+        }
+        
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(90deg);
+        }
+        
+        .memo-modal-body {
+            padding: var(--spacing-xl);
+            display: flex;
+            gap: var(--spacing-xl);
+        }
+        
+        .memo-input-container {
+            flex: 2;
+        }
+        
+        .memo-input-container label {
+            display: block;
+            margin-bottom: var(--spacing-md);
+            font-weight: 600;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .memo-input-container textarea {
+            width: 100%;
+            border: 2px solid rgba(255, 140, 0, 0.3);
+            border-radius: var(--border-radius-lg);
+            padding: var(--spacing-md);
+            font-family: inherit;
+            font-size: 16px;
+            line-height: 1.6;
+            background: var(--bg-surface);
+            color: var(--text-primary);
+            transition: all 0.3s var(--ease-luxury);
+            resize: vertical;
+            min-height: 200px;
+            box-sizing: border-box;
+        }
+        
+        .memo-input-container textarea:focus {
+            outline: none;
+            border-color: var(--hermes-orange);
+            box-shadow: 0 0 0 4px rgba(255, 140, 0, 0.15);
+            transform: translateY(-2px);
+        }
+        
+        .memo-counter {
+            text-align: right;
+            margin-top: var(--spacing-sm);
+            font-size: 14px;
+            color: var(--text-muted);
+        }
+        
+        .memo-tips {
+            flex: 1;
+            background: var(--gradient-surface);
+            padding: var(--spacing-lg);
+            border-radius: var(--border-radius-lg);
+            border-left: 4px solid var(--hermes-orange);
+        }
+        
+        .memo-tips h4 {
+            margin: 0 0 var(--spacing-md) 0;
+            color: var(--text-primary);
+            font-size: 16px;
+        }
+        
+        .memo-tips ul {
+            margin: 0;
+            padding-left: var(--spacing-lg);
+            color: var(--text-secondary);
+        }
+        
+        .memo-tips li {
+            margin-bottom: var(--spacing-sm);
+            line-height: 1.5;
+        }
+        
+        .memo-modal-footer {
+            padding: var(--spacing-lg) var(--spacing-xl);
+            background: var(--bg-surface);
+            border-top: 1px solid rgba(255, 140, 0, 0.1);
+            display: flex;
+            justify-content: flex-end;
+            gap: var(--spacing-md);
+        }
+        
+        /* 메모 모달 반응형 */
+        @media (max-width: 768px) {
+            .memo-modal-content {
+                width: 95vw;
+                max-height: 90vh;
+            }
+            
+            .memo-modal-body {
+                flex-direction: column;
+                padding: var(--spacing-lg);
+            }
+            
+            .memo-tips {
+                order: -1;
+            }
+            
+                         .memo-input-container textarea {
+                 min-height: 150px;
+             }
+             
+             /* 모바일 에르메스 스크롤바 조정 */
+             .property-list {
+                 max-height: 60vh;
+                 padding-right: var(--spacing-xs);
+             }
+             
+             .property-list::-webkit-scrollbar {
+                 width: 8px;
+             }
+             
+             .property-list::-webkit-scrollbar-track {
+                 background: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 100%);
+                 border-radius: 8px;
+                 border: 1px solid rgba(255, 140, 0, 0.12);
+             }
+             
+             .property-list::-webkit-scrollbar-thumb {
+                 background: linear-gradient(135deg, #FF8C00 0%, #CC7000 100%);
+                 border-radius: 8px;
+                 border: 1px solid #FFF8DC;
+                 box-shadow: 0 1px 4px rgba(255, 140, 0, 0.2);
+             }
+             
+             .property-list::-webkit-scrollbar-thumb:hover {
+                 background: linear-gradient(135deg, #FFB84D 0%, #FF8C00 100%);
+                 box-shadow: 0 2px 8px rgba(255, 140, 0, 0.3);
+             }
+         }
+         
+         @media (max-width: 480px) {
+             .property-list {
+                 max-height: 50vh;
+                 padding-right: 0;
+             }
+             
+             .property-list::-webkit-scrollbar {
+                 width: 6px;
+             }
+             
+             .property-list::-webkit-scrollbar-track {
+                 background: linear-gradient(135deg, #FFF8DC 0%, #F5F5DC 100%);
+                 border-radius: 6px;
+                 border: none;
+             }
+             
+             .property-list::-webkit-scrollbar-thumb {
+                 background: linear-gradient(135deg, #FF8C00 0%, #8B4513 100%);
+                 border-radius: 6px;
+                 border: none;
+                 box-shadow: 0 1px 3px rgba(255, 140, 0, 0.15);
+             }
+             
+             .property-list::-webkit-scrollbar-thumb:hover {
+                 background: linear-gradient(135deg, #FFB84D 0%, #CC7000 100%);
+             }
+             
+             .filter-controls {
+                 flex-direction: column;
+                 gap: var(--spacing-md);
+                 align-items: stretch;
+             }
+             
+             .filter-stats {
+                 margin-left: 0;
+                 justify-content: center;
+                 flex-wrap: wrap;
+             }
+            
+            .modal-buttons {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+            
+                         .modal-buttons .btn {
+                 width: 100%;
+             }
+         }
+            
+            .logo {
+                font-size: 28px;
+            }
+            
+            .customer-info {
+                font-size: 16px;
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .container {
+                padding: var(--spacing-lg) var(--spacing-sm);
+            }
+            
+            .content-section {
+                padding: var(--spacing-md);
+            }
+            
+            .section-title {
+                font-size: 24px;
+            }
+            
+            .property-item:hover {
+                transform: translateY(-4px);
+            }
+        }
+        
+        /* 고급 호버 효과 */
+        .luxury-hover {
+            transition: all 0.4s var(--ease-luxury);
+        }
+        
+        .luxury-hover:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-medium);
+        }
+        
+        /* 프리미엄 글래스모피즘 효과 */
+        .glass-effect {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        /* 텍스트 그라데이션 */
+        .text-gradient {
+            background: var(--gradient-primary);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">EXECUTIVE WORKSPACE</div>
+            <div class="customer-info">
+                <button class="customer-name" onclick="changeCustomerName()">{{ customer_name }}</button>
+                {% if move_in_date %}
+                <button class="date-selector" onclick="changeMoveInDate()">입주일: {{ move_in_date }}</button>
+                {% else %}
+                <button class="date-selector" onclick="changeMoveInDate()">입주일 설정</button>
+                {% endif %}
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="main-content">
+            <div class="content-section">
+                <h1 class="section-title">프리미엄등록</h1>
+                <div id="propertyForm">
+                    <div class="form-group">
+                        <label for="url">매물 URL</label>
+                        <input type="url" id="url" name="url" required placeholder="https://premium-office.example.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="platform">플랫폼</label>
+                        <select id="platform" name="platform" required>
+                            <option value="">플랫폼 선택</option>
+                            <option value="네이버부동산">네이버부동산</option>
+                            <option value="네모">네모</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="memo">상세 메모</label>
+                        <textarea id="memo" name="memo" rows="4" placeholder="오피스 특징, 위치, 시설 등 상세 정보를 입력하세요"></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" onclick="addProperty()">
+                        <span id="submitText">등록하기</span>
+                        <span id="submitLoading" class="loading" style="display: none;"></span>
+                    </button>
+                </div>
+            </div>
+
+            <div class="content-section">
+                <h2 class="section-title">프리미엄 컬렉션</h2>
+                
+                <!-- 필터 컨트롤 -->
+                <div class="filter-controls">
+                    <div class="filter-group">
+                        <label>플랫폼:</label>
+                        <select id="platformFilter" onchange="applyFilters()">
+                            <option value="all">전체</option>
+                            <option value="네이버부동산">네이버부동산</option>
+                            <option value="네모">네모</option>
+                            <option value="기타">기타</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-group">
+                        <label>평가:</label>
+                        <select id="likeFilter" onchange="applyFilters()">
+                            <option value="all">전체</option>
+                            <option value="liked">좋아요 ❤️</option>
+                            <option value="disliked">싫어요 👎</option>
+                            <option value="none">평가 안함</option>
+                        </select>
+                    </div>
+                    
+                    <div class="filter-stats">
+                        <span id="totalCount">총 0개</span>
+                        <span id="likedCount">좋아요 0개</span>
+                        <span id="dislikedCount">싫어요 0개</span>
+                    </div>
+                </div>
+                
+                <div class="property-list" id="linksList">
+                    <!-- 매물 목록이 여기에 동적으로 로드됩니다 -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 평점 선택 모달 -->
+    <div id="ratingModal" class="rating-modal">
+        <div class="rating-modal-content">
+            <h3>평점을 선택하세요</h3>
+            <div class="star-rating">
+                <span class="star" data-rating="1">★</span>
+                <span class="star" data-rating="2">★</span>
+                <span class="star" data-rating="3">★</span>
+                <span class="star" data-rating="4">★</span>
+                <span class="star" data-rating="5">★</span>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="confirmRating()">확인</button>
+                <button class="btn btn-secondary" onclick="closeRatingModal()">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 입주일 선택 모달 -->
+    <div id="dateModal" class="rating-modal">
+        <div class="rating-modal-content">
+            <h3>📅 입주일을 선택하세요</h3>
+            <div class="date-picker-container">
+                <input type="date" id="moveInDatePicker" class="date-picker-input">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn btn-primary" onclick="confirmDate()">확인</button>
+                <button class="btn btn-secondary" onclick="closeDateModal()">취소</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 고급 메모 모달 -->
+    <div id="memoModal" class="rating-modal">
+        <div class="memo-modal-content">
+            <div class="memo-modal-header">
+                <h3>📝 프리미엄 메모 작성</h3>
+                <button class="close-btn" onclick="closeMemoModal()">×</button>
+            </div>
+            <div class="memo-modal-body">
+                <div class="memo-input-container">
+                    <label for="memoTextarea">매물에 대한 상세한 메모를 작성해주세요</label>
+                    <textarea id="memoTextarea" placeholder="• 매물의 장단점&#10;• 위치 및 교통편&#10;• 시설 및 편의사항&#10;• 가격 협상 가능성&#10;• 기타 특이사항" rows="8"></textarea>
+                    <div class="memo-counter">
+                        <span id="memoCharCount">0</span> / 500자
+                    </div>
+                </div>
+                <div class="memo-tips">
+                    <h4>💡 메모 작성 팁</h4>
+                    <ul>
+                        <li>구체적이고 객관적인 정보를 기록하세요</li>
+                        <li>향후 비교 검토에 도움이 될 내용을 포함하세요</li>
+                        <li>중요한 포인트는 • 기호로 정리해보세요</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="memo-modal-footer">
+                <button class="btn btn-secondary" onclick="closeMemoModal()">취소</button>
+                <button class="btn btn-primary" onclick="confirmMemo()">저장</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let currentEditId = null;
+        let currentRatingId = null;
+        let selectedRating = 0;
+        const managementSiteId = '{{ management_site_id }}' || null;
+
+        // 페이지 로드 시 매물 목록 불러오기
+        document.addEventListener('DOMContentLoaded', function() {
+            loadLinks();
+            initializeRatingModal();
+            initializeDateModal();
+            initializeMemoModal();
+        });
+        
+        // 메모 모달 초기화
+        function initializeMemoModal() {
+            const memoModal = document.getElementById('memoModal');
+            const memoTextarea = document.getElementById('memoTextarea');
+            
+            // 모달 외부 클릭 시 닫기
+            memoModal.addEventListener('click', (e) => {
+                if (e.target === memoModal) {
+                    closeMemoModal();
+                }
+            });
+            
+            // 글자 수 카운터 이벤트
+            memoTextarea.addEventListener('input', updateMemoCounter);
+            
+            // 최대 글자 수 제한
+            memoTextarea.addEventListener('input', function() {
+                if (this.value.length > 500) {
+                    this.value = this.value.substring(0, 500);
+                    updateMemoCounter();
+                    showNotification('메모는 최대 500자까지 입력 가능합니다.', 'warning');
+                }
+            });
+        }
+
+        // 평점 모달 초기화
+        function initializeRatingModal() {
+            const stars = document.querySelectorAll('.star');
+            const modal = document.getElementById('ratingModal');
+
+            stars.forEach((star, index) => {
+                star.addEventListener('mouseenter', () => highlightStars(index + 1));
+                star.addEventListener('mouseleave', () => highlightStars(selectedRating));
+                star.addEventListener('click', () => {
+                    selectedRating = index + 1;
+                    highlightStars(selectedRating);
+                });
+            });
+
+            // 모달 외부 클릭 시 닫기
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    closeRatingModal();
+                }
+            });
+        }
+
+        // 달력 모달 초기화
+        function initializeDateModal() {
+            const dateModal = document.getElementById('dateModal');
+            
+            // 모달 외부 클릭 시 닫기
+            dateModal.addEventListener('click', (e) => {
+                if (e.target === dateModal) {
+                    closeDateModal();
+                }
+            });
+        }
+
+        function highlightStars(rating) {
+            const stars = document.querySelectorAll('.star');
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('active');
+                } else {
+                    star.classList.remove('active');
+                }
+            });
+        }
+
+        // 매물 추가 함수
+        function addProperty() {
+            const submitText = document.getElementById('submitText');
+            const submitLoading = document.getElementById('submitLoading');
+            
+            submitText.style.display = 'none';
+            submitLoading.style.display = 'inline-block';
+            
+            const data = {
+                url: document.getElementById('url').value,
+                platform: document.getElementById('platform').value,
+                added_by: '관리자',
+                memo: document.getElementById('memo').value
+            };
+            
+            // managementSiteId가 있는 경우 URL 파라미터 추가
+            let url = '/api/links';
+            if (managementSiteId && managementSiteId !== 'None') {
+                url += `?management_site_id=${managementSiteId}`;
+            }
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    clearForm();
+                    loadLinks();
+                    showNotification('프리미엄 매물이 성공적으로 등록되었습니다!', 'success');
+                } else {
+                    showNotification('매물 등록 중 오류가 발생했습니다.', 'error');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('매물 등록 중 오류가 발생했습니다.', 'error');
+            })
+            .finally(() => {
+                submitText.style.display = 'inline';
+                submitLoading.style.display = 'none';
+            });
+        }
+
+        function clearForm() {
+            document.getElementById('url').value = '';
+            document.getElementById('platform').value = '';
+            document.getElementById('memo').value = '';
+        }
+
+        // 매물 목록 로드 함수
+        function loadLinks() {
+            let url = '/api/links';
+            if (managementSiteId) {
+                url += `?management_site_id=${managementSiteId}`;
+            }
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    displayLinks(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('매물 목록을 불러오는 중 오류가 발생했습니다.', 'error');
+                });
+        }
+
+        // 매물 목록 표시 함수
+        function displayLinks(links) {
+            const linksList = document.getElementById('linksList');
+            linksList.innerHTML = '';
+            
+            if (links.length === 0) {
+                linksList.innerHTML = '<p style="text-align: center; color: var(--text-muted); padding: 60px; font-size: 18px; font-style: italic;">아직 등록된 프리미엄 매물이 없습니다.</p>';
+                updateFilterStats([]);
+                return;
+            }
+            
+            links.forEach(link => {
+                const linkElement = createLinkElement(link);
+                linksList.appendChild(linkElement);
+            });
+            
+            // 통계 업데이트
+            updateFilterStats(links);
+            
+            // 스크롤 페이드 효과 체크
+            checkScrollFade();
+        }
+        
+        // 스크롤 페이드 효과 체크
+        function checkScrollFade() {
+            const propertyList = document.getElementById('linksList');
+            const contentSection = propertyList.closest('.content-section');
+            
+            if (propertyList.scrollHeight > propertyList.clientHeight) {
+                contentSection.classList.add('has-scroll');
+                
+                // 스크롤 이벤트 리스너 추가
+                propertyList.addEventListener('scroll', function() {
+                    const isAtBottom = this.scrollTop + this.clientHeight >= this.scrollHeight - 10;
+                    if (isAtBottom) {
+                        contentSection.classList.remove('has-scroll');
+                    } else {
+                        contentSection.classList.add('has-scroll');
+                    }
+                });
+            } else {
+                contentSection.classList.remove('has-scroll');
+            }
+        }
+
+        // 매물 요소 생성 함수
+        function createLinkElement(link) {
+            const div = document.createElement('div');
+            let className = 'property-item luxury-hover';
+            
+            // 좋아요/싫어요 상태에 따라 클래스 추가
+            if (link.liked) {
+                className += ' liked';
+            } else if (link.disliked) {
+                className += ' disliked';
+            }
+            
+            div.className = className;
+            
+            const stars = '★'.repeat(link.rating) + '☆'.repeat(5 - link.rating);
+            
+            // 플랫폼별 클래스 설정
+            let platformClass = '';
+            if (link.platform === '네모') {
+                platformClass = 'nemo';
+            } else if (link.platform === '기타') {
+                platformClass = 'etc';
+            }
+            
+            div.innerHTML = `
+                <div class="property-header">
+                    <div style="display: flex; align-items: center; gap: 12px;">
+                        <span class="property-number" style="background: var(--gradient-primary); color: white; padding: 4px 12px; border-radius: 2px; font-weight: bold; font-size: 14px;">No.${link.number}</span>
+                        <span class="property-platform ${platformClass}">${link.platform}</span>
+                    </div>
+                    <div class="property-actions">
+                        <button class="action-btn like-btn ${link.liked ? 'active' : ''}" onclick="toggleLike(${link.id})" title="추천">
+                            ${link.liked ? '❤️' : '🤍'}
+                        </button>
+                        <button class="action-btn dislike-btn ${link.disliked ? 'active' : ''}" onclick="toggleDislike(${link.id})" title="비추천">
+                            👎
+                        </button>
+                        <button class="action-btn edit-btn" onclick="editMemo(${link.id}, '${link.memo ? link.memo.replace(/'/g, "\\'") : ''}')" title="메모 수정">📝</button>
+                        <button class="action-btn delete-btn" onclick="deleteLink(${link.id})" title="삭제">🗑️</button>
+                    </div>
+                </div>
+                <a href="${link.url}" target="_blank" class="property-url">${link.url}</a>
+                <div class="rating">
+                    <span class="stars">${stars}</span>
+                    <span onclick="changeRating(${link.id}, ${link.rating})" style="cursor: pointer; margin-left: 12px; color: var(--hermes-orange); font-weight: 600;">평점 변경</span>
+                </div>
+                ${link.memo ? `<div class="memo">${link.memo}</div>` : ''}
+                <div class="property-meta">
+                    <span><strong>등록일:</strong> ${link.date_added}</span>
+                </div>
+            `;
+            
+            return div;
+        }
+
+        function toggleLike(id) {
+            const likeBtn = document.querySelector(`button[onclick="toggleLike(${id})"]`);
+            const isCurrentlyLiked = likeBtn.classList.contains('active');
+            
+            fetch(`/api/links/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({action: 'like', liked: !isCurrentlyLiked})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadLinks();
+                    if (!isCurrentlyLiked) {
+                        showNotification('매물을 좋아요 했습니다! ❤️', 'success');
+                    } else {
+                        showNotification('좋아요를 취소했습니다.', 'info');
+                    }
+                }
+            });
+        }
+
+        function toggleDislike(id) {
+            const dislikeBtn = document.querySelector(`button[onclick="toggleDislike(${id})"]`);
+            const isCurrentlyDisliked = dislikeBtn.classList.contains('active');
+            
+            fetch(`/api/links/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({action: 'dislike', disliked: !isCurrentlyDisliked})
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    loadLinks();
+                    if (!isCurrentlyDisliked) {
+                        showNotification('매물을 싫어요 했습니다. 👎', 'warning');
+                    } else {
+                        showNotification('싫어요를 취소했습니다.', 'info');
+                    }
+                }
+            });
+        }
+
+        function deleteLink(id) {
+            if (confirm('정말로 이 프리미엄 매물을 삭제하시겠습니까?')) {
+                fetch(`/api/links/${id}`, {
+                    method: 'DELETE'
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadLinks();
+                        showNotification('매물이 삭제되었습니다.', 'success');
+                    }
+                });
+            }
+        }
+
+        function changeRating(id, currentRating) {
+            currentRatingId = id;
+            selectedRating = currentRating;
+            highlightStars(currentRating);
+            
+            const modal = document.getElementById('ratingModal');
+            modal.classList.add('show');
+        }
+
+        function confirmRating() {
+            if (selectedRating > 0 && currentRatingId) {
+                fetch(`/api/links/${currentRatingId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({action: 'rating', rating: selectedRating})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadLinks();
+                        showNotification(`평점이 ${selectedRating}점으로 변경되었습니다! ⭐`, 'success');
+                        closeRatingModal();
+                    }
+                });
+            }
+        }
+
+        function closeRatingModal() {
+            const modal = document.getElementById('ratingModal');
+            modal.classList.remove('show');
+            currentRatingId = null;
+            selectedRating = 0;
+            highlightStars(0);
+        }
+
+        function changeCustomerName() {
+            const newName = prompt('새로운 고객명을 입력하세요:');
+            if (newName && newName.trim()) {
+                updateCustomerInfo(newName.trim(), null);
+            }
+        }
+
+        function changeMoveInDate() {
+            const dateModal = document.getElementById('dateModal');
+            const datePicker = document.getElementById('moveInDatePicker');
+            
+            // 현재 날짜로 초기화
+            const today = new Date().toISOString().split('T')[0];
+            datePicker.value = today;
+            
+            dateModal.classList.add('show');
+        }
+
+        function confirmDate() {
+            const datePicker = document.getElementById('moveInDatePicker');
+            const selectedDate = datePicker.value;
+            
+            if (selectedDate) {
+                updateCustomerInfo(null, selectedDate);
+                closeDateModal();
+            }
+        }
+
+        function closeDateModal() {
+            const dateModal = document.getElementById('dateModal');
+            dateModal.classList.remove('show');
+        }
+
+        function updateCustomerInfo(name, date) {
+            const data = {};
+            if (name) data.customer_name = name;
+            if (date) data.move_in_date = date;
+            
+            let url = '/api/customer_info';
+            if (managementSiteId) {
+                url += `?management_site_id=${managementSiteId}`;
+            }
+            
+            fetch(url, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    if (name) {
+                        showNotification(`고객명이 "${name}"으로 변경되었습니다! 👤`, 'success');
+                    }
+                    if (date) {
+                        showNotification(`입주일이 ${date}로 설정되었습니다! 📅`, 'success');
+                    }
+                    setTimeout(() => {
+                        location.reload();
+                    }, 1500);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                showNotification('정보 수정 중 오류가 발생했습니다.', 'error');
+            });
+        }
+
+        let currentMemoId = null;
+        
+        function editMemo(id, currentMemo) {
+            currentMemoId = id;
+            const memoTextarea = document.getElementById('memoTextarea');
+            memoTextarea.value = currentMemo || '';
+            updateMemoCounter();
+            
+            const memoModal = document.getElementById('memoModal');
+            memoModal.classList.add('show');
+            
+            // 포커스 설정
+            setTimeout(() => {
+                memoTextarea.focus();
+            }, 300);
+        }
+        
+        function closeMemoModal() {
+            const memoModal = document.getElementById('memoModal');
+            memoModal.classList.remove('show');
+            currentMemoId = null;
+            document.getElementById('memoTextarea').value = '';
+            updateMemoCounter();
+        }
+        
+        function confirmMemo() {
+            const memoText = document.getElementById('memoTextarea').value;
+            
+            if (currentMemoId) {
+                fetch(`/api/links/${currentMemoId}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({action: 'memo', memo: memoText})
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        loadLinks();
+                        showNotification('프리미엄 메모가 저장되었습니다! 📝✨', 'success');
+                        closeMemoModal();
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('메모 저장 중 오류가 발생했습니다.', 'error');
+                });
+            }
+        }
+        
+        function updateMemoCounter() {
+            const textarea = document.getElementById('memoTextarea');
+            const counter = document.getElementById('memoCharCount');
+            const length = textarea.value.length;
+            counter.textContent = length;
+            
+            // 글자 수에 따른 색상 변경
+            if (length > 450) {
+                counter.style.color = '#EF4444';
+            } else if (length > 350) {
+                counter.style.color = '#F59E0B';
+            } else {
+                counter.style.color = 'var(--text-muted)';
+            }
+        }
+        
+        // 필터 기능
+        function applyFilters() {
+            const platformFilter = document.getElementById('platformFilter').value;
+            const likeFilter = document.getElementById('likeFilter').value;
+            
+            let url = '/api/links';
+            const params = new URLSearchParams();
+            
+            if (managementSiteId) {
+                params.append('management_site_id', managementSiteId);
+            }
+            
+            if (platformFilter !== 'all') {
+                params.append('platform', platformFilter);
+            }
+            
+            if (likeFilter !== 'all') {
+                if (likeFilter === 'liked') {
+                    params.append('like', 'liked');
+                } else if (likeFilter === 'disliked') {
+                    params.append('like', 'disliked');
+                } else if (likeFilter === 'none') {
+                    params.append('like', 'none');
+                }
+            }
+            
+            if (params.toString()) {
+                url += '?' + params.toString();
+            }
+            
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    displayLinks(data);
+                    updateFilterStats(data);
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    showNotification('필터 적용 중 오류가 발생했습니다.', 'error');
+                });
+        }
+        
+        function updateFilterStats(links) {
+            const totalCount = links.length;
+            const likedCount = links.filter(link => link.liked).length;
+            const dislikedCount = links.filter(link => link.disliked).length;
+            
+            document.getElementById('totalCount').textContent = `총 ${totalCount}개`;
+            document.getElementById('likedCount').textContent = `좋아요 ${likedCount}개`;
+            document.getElementById('dislikedCount').textContent = `싫어요 ${dislikedCount}개`;
+        }
+
+        function showNotification(message, type) {
+            const notification = document.createElement('div');
+            notification.className = `notification ${type}`;
+            notification.textContent = message;
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.animation = 'luxury-entrance 0.4s var(--ease-luxury) reverse';
+                setTimeout(() => {
+                    if (document.body.contains(notification)) {
+                        document.body.removeChild(notification);
+                    }
+                }, 400);
+            }, 4000);
+        }
+    </script>
+</body>
+</html> 
